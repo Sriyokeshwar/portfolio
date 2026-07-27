@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sriyokeshwar.dev/sitemap.xml
+Sitemap: https://portfolio-sricode.vercel.app/sitemap.xml

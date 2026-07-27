@@ -1,127 +1,249 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionHeading } from '../components/shared/SectionHeading';
 import { GlassCard } from '../components/ui/GlassCard';
 import { experience } from '../data/experience';
-import { Briefcase, Calendar, MapPin, ChevronDown, CheckCircle2 } from 'lucide-react';
-import { fadeUp } from '../animations/variants';
+import { Briefcase, Calendar, MapPin, CheckCircle2 } from 'lucide-react';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const Experience = () => {
-  const [expandedId, setExpandedId] = useState(experience[0]?.id || null);
+  const containerRef = useRef(null);
+  const cardsWrapperRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
-  const toggleExpand = (id) => {
-    setExpandedId((prev) => (prev === id ? null : id));
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // GSAP Sliding & Stacking Timeline
+  useEffect(() => {
+    if (prefersReducedMotion || isMobile) return;
+
+    const cards = gsap.utils.toArray('.experience-stack-card');
+    
+    // Pin section
+    const pinTrigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: `+=${(cards.length - 1) * 100}%`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 1,
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: `+=${(cards.length - 1) * 100}%`,
+        scrub: 1,
+        onUpdate: (self) => {
+          const index = Math.min(
+            Math.floor(self.progress * cards.length),
+            cards.length - 1
+          );
+          setActiveIndex(index);
+        },
+      }
+    });
+
+    cards.forEach((card, idx) => {
+      if (idx === 0) return;
+
+      // Push preceding card back into background depth
+      tl.to(`.exp-card-${idx - 1}`, {
+        scale: 0.92,
+        opacity: 0.45,
+        filter: 'blur(6px)',
+        yPercent: -10,
+        duration: 1,
+      }, idx - 1);
+
+      // Slide current card forward
+      tl.fromTo(`.exp-card-${idx}`,
+        {
+          yPercent: 120,
+          scale: 0.95,
+          opacity: 0,
+        },
+        {
+          yPercent: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 1,
+        },
+        idx - 1
+      );
+    });
+
+    return () => {
+      pinTrigger.kill();
+      tl.kill();
+    };
+  }, [prefersReducedMotion, isMobile]);
 
   return (
-    <section id="experience" className="py-24 px-6 relative z-10">
+    <section
+      ref={containerRef}
+      id="experience"
+      className="py-24 px-6 relative z-10 bg-[#050816] overflow-hidden"
+    >
       <div className="max-w-4xl mx-auto space-y-16">
         <SectionHeading
           badge="Career History"
           title="Industry Experience"
-          subtitle="Real-world internship exposure building MERN stack features, responsive UIs, and backend services end to end."
+          subtitle="Real-world internship exposure building MERN stack features and backend solutions end-to-end."
         />
 
-        {/* Vertical Interactive Timeline */}
-        <div className="relative border-l-2 border-white/10 pl-6 md:pl-10 space-y-10">
-          {experience.map((exp) => {
-            const isExpanded = expandedId === exp.id;
-            return (
-              <motion.div
-                key={exp.id}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-50px' }}
-                className="relative group"
-              >
-                {/* Timeline Pin */}
-                <span className="absolute -left-[31px] md:-left-[47px] top-4 w-5 h-5 rounded-full bg-bg-dark border-2 border-primary group-hover:scale-125 transition-transform duration-300 flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                </span>
+        {isMobile ? (
+          // Mobile View: Chronological responsive list
+          <div className="space-y-8 pl-4 border-l border-white/10 relative">
+            {experience.map((exp, idx) => (
+              <div key={exp.id} className="relative space-y-3">
+                <span className="absolute -left-[24px] top-1.5 w-3.5 h-3.5 rounded-full bg-secondary border-2 border-bg-dark" />
+                <div>
+                  <span className="text-[10px] font-mono text-secondary uppercase font-bold tracking-wider">
+                    {exp.duration} — {exp.type}
+                  </span>
+                  <h3 className="text-lg font-bold font-heading text-text-primary">
+                    {exp.role}
+                  </h3>
+                  <h4 className="text-xs font-semibold text-primary">
+                    {exp.company}
+                  </h4>
+                </div>
+                <p className="text-xs text-text-muted leading-relaxed">
+                  {exp.summary}
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {exp.techStack.map((tech) => (
+                    <span key={tech} className="text-[9px] font-mono glass-panel px-2 py-0.5 rounded text-text-muted border border-white/10">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          // Desktop View: Pinned card overlapping sliding deck
+          <div className="grid grid-cols-12 gap-8 items-center h-[50vh]">
+            
+            {/* Left Timeline Guide (Visual Connection) */}
+            <div className="col-span-4 relative pl-6 border-l border-white/10 h-full flex flex-col justify-around py-4">
+              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5" />
+              <div 
+                className="absolute left-0 top-0 w-[2px] bg-gradient-to-b from-primary to-secondary transition-all duration-700" 
+                style={{
+                  height: `${((activeIndex + 1) / experience.length) * 100}%`,
+                }}
+              />
 
-                <GlassCard className="p-6 space-y-4">
-                  {/* Card Header */}
+              {experience.map((exp, idx) => {
+                const isActive = idx === activeIndex;
+                return (
                   <div
-                    onClick={() => toggleExpand(exp.id)}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer"
+                    key={exp.id}
+                    className={`relative transition-all duration-500 cursor-pointer ${
+                      isActive ? 'translate-x-3' : 'opacity-30'
+                    }`}
                   >
-                    <div>
-                      <div className="flex items-center gap-2 text-xs font-mono text-primary font-semibold mb-1">
-                        <Briefcase className="w-3.5 h-3.5" />
-                        <span>{exp.type}</span>
-                      </div>
-                      <h3 className="text-xl font-bold font-heading text-text-primary">
-                        {exp.role}
-                      </h3>
-                      <p className="text-sm font-medium text-secondary">
-                        {exp.company}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-4 text-xs text-text-muted">
-                      <div className="flex items-center gap-1.5 glass-panel px-3 py-1.5 rounded-full">
-                        <Calendar className="w-3.5 h-3.5 text-primary" />
-                        <span>{exp.duration}</span>
-                      </div>
-                      <ChevronDown
-                        className={`w-5 h-5 transition-transform duration-300 ${
-                          isExpanded ? 'rotate-180 text-primary' : ''
-                        }`}
-                      />
-                    </div>
+                    <span className={`text-[10px] font-mono uppercase tracking-widest ${isActive ? 'text-primary font-bold' : 'text-text-muted'}`}>
+                      {exp.duration}
+                    </span>
+                    <h4 className={`text-base font-bold font-heading transition-colors ${isActive ? 'text-text-primary' : 'text-text-muted'}`}>
+                      {exp.company}
+                    </h4>
                   </div>
+                );
+              })}
+            </div>
 
-                  {/* Accordion Expandable Content */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="pt-4 border-t border-white/10 space-y-4 overflow-hidden"
-                      >
-                        <p className="text-sm text-text-muted leading-relaxed">
+            {/* Right Card Overlay Panel */}
+            <div ref={cardsWrapperRef} className="col-span-8 relative w-full h-full flex items-center justify-center">
+              {experience.map((exp, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <div
+                    key={exp.id}
+                    className={`experience-stack-card exp-card-${idx} absolute inset-0 w-full h-full flex items-center justify-center`}
+                    style={{
+                      zIndex: 10 + idx,
+                      willChange: 'transform, opacity, filter',
+                    }}
+                  >
+                    <GlassCard
+                      glowColor={idx === 0 ? 'rgba(6, 182, 212, 0.2)' : 'rgba(249, 115, 22, 0.2)'}
+                      className="p-8 space-y-5 w-full h-full flex flex-col justify-between border border-white/10 shadow-2xl relative"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="flex items-center gap-1.5 text-xs font-mono text-primary font-semibold uppercase">
+                              <Briefcase className="w-3.5 h-3.5" />
+                              <span>{exp.type}</span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-extrabold font-heading text-text-primary mt-1">
+                              {exp.role}
+                            </h3>
+                            <h4 className="text-sm font-semibold text-secondary">
+                              {exp.company}
+                            </h4>
+                          </div>
+                          
+                          <div className="flex items-center gap-1.5 glass-panel px-3 py-1.5 rounded-full text-xs text-text-muted font-mono">
+                            <Calendar className="w-3.5 h-3.5 text-primary" />
+                            <span>{exp.duration}</span>
+                          </div>
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
                           {exp.summary}
                         </p>
 
                         <div className="space-y-2">
-                          <span className="text-xs font-mono uppercase tracking-wider text-text-muted">
-                            Key Impact & Deliverables:
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-text-muted">
+                            Highlights
                           </span>
                           <ul className="space-y-1.5">
-                            {exp.highlights.map((h, idx) => (
-                              <li
-                                key={idx}
-                                className="flex items-start gap-2 text-xs text-text-secondary"
-                              >
+                            {exp.highlights.map((h, hIdx) => (
+                              <li key={hIdx} className="flex items-start gap-2 text-xs text-text-secondary">
                                 <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
                                 <span>{h}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
+                      </div>
 
-                        {/* Tech Stack Chips */}
-                        <div className="flex flex-wrap gap-2 pt-2">
-                          {exp.techStack.map((tech) => (
-                            <span
-                              key={tech}
-                              className="text-[11px] font-mono glass-panel px-3 py-1 rounded-full text-text-muted border border-white/10"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </GlassCard>
-              </motion.div>
-            );
-          })}
-        </div>
+                      {/* Tech Chips */}
+                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/10">
+                        {exp.techStack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="text-[10px] font-mono glass-panel px-2.5 py-1 rounded-md text-text-muted border border-white/10"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </GlassCard>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -2,11 +2,13 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { profile } from '../../data/profile';
 
+const SITE_URL = 'https://portfolio-sricode.vercel.app';
+
 export const SEO = ({
   title = `${profile.name} — Frontend & Full Stack Developer | UI/UX Designer`,
   description = profile.tagline,
   image = '/og-image.png',
-  url = 'https://sriyokeshwar.dev',
+  url = SITE_URL,
 }) => {
   const schemaPerson = {
     '@context': 'https://schema.org',

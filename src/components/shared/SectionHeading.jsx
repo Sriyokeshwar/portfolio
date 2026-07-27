@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { fadeUp } from '../../animations/variants';
+import { fadeUp } from '../../motion';
 
 export const SectionHeading = ({ title, subtitle, badge }) => {
   return (

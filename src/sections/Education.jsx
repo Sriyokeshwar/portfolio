@@ -4,7 +4,8 @@ import { SectionHeading } from '../components/shared/SectionHeading';
 import { GlassCard } from '../components/ui/GlassCard';
 import { education } from '../data/education';
 import { GraduationCap, Calendar, Award } from 'lucide-react';
-import { fadeUp } from '../animations/variants';
+import { fadeUp } from '../motion';
+import { TiltCard } from '../components/shared/TiltCard';
 
 export const Education = () => {
   return (
@@ -32,36 +33,38 @@ export const Education = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
               </span>
 
-              <GlassCard className="p-6 space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-xs font-mono text-secondary font-semibold">
-                    <GraduationCap className="w-4 h-4" />
-                    <span>{edu.status}</span>
+              <TiltCard maxAngle={8} className="h-full">
+                <GlassCard glowColor="rgba(6, 182, 212, 0.2)" className="p-6 space-y-3 transform-style-preserve-3d">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-xs font-mono text-secondary font-semibold">
+                      <GraduationCap className="w-4 h-4" />
+                      <span>{edu.status}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 glass-panel px-3 py-1 rounded-full text-xs text-text-muted w-fit">
+                      <Calendar className="w-3.5 h-3.5 text-secondary" />
+                      <span>{edu.period}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5 glass-panel px-3 py-1 rounded-full text-xs text-text-muted w-fit">
-                    <Calendar className="w-3.5 h-3.5 text-secondary" />
-                    <span>{edu.period}</span>
+
+                  <h3 className="text-xl font-bold font-heading text-text-primary">
+                    {edu.degree}
+                  </h3>
+
+                  <p className="text-sm font-medium text-text-secondary">
+                    {edu.institution}
+                  </p>
+
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="text-xs font-mono font-bold text-primary glass-panel px-3 py-1 rounded-md border border-primary/30">
+                      Score: {edu.score}
+                    </span>
                   </div>
-                </div>
 
-                <h3 className="text-xl font-bold font-heading text-text-primary">
-                  {edu.degree}
-                </h3>
-
-                <p className="text-sm font-medium text-text-secondary">
-                  {edu.institution}
-                </p>
-
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="text-xs font-mono font-bold text-primary glass-panel px-3 py-1 rounded-md border border-primary/30">
-                    Score: {edu.score}
-                  </span>
-                </div>
-
-                <p className="text-xs text-text-muted leading-relaxed pt-1">
-                  {edu.description}
-                </p>
-              </GlassCard>
+                  <p className="text-xs text-text-muted leading-relaxed pt-1">
+                    {edu.description}
+                  </p>
+                </GlassCard>
+              </TiltCard>
             </motion.div>
           ))}
         </div>

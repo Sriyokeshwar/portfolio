@@ -4,9 +4,11 @@ import { Command, Moon, Sun, Menu } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useCursor } from '../../context/CursorContext';
 import { profile } from '../../data/profile';
+import { tokens } from '../../theme/tokens';
 
 const navItems = [
   { label: 'About', href: '#about' },
+  { label: 'Education', href: '#education' },
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
@@ -21,6 +23,11 @@ export const Navbar = ({ onOpenCommandPalette, onOpenMobileDrawer }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('');
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,13 +66,15 @@ export const Navbar = ({ onOpenCommandPalette, onOpenMobileDrawer }) => {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed top-5 left-0 right-0 z-40 flex justify-center px-4"
+          transition={{ duration: 0.4, ease: tokens.transitions.easePremium }}
+          style={{ zIndex: tokens.zIndex.navigation }}
+          className="fixed top-5 left-0 right-0 flex justify-center px-4"
         >
-          <nav className="glass-panel rounded-full px-5 py-3 flex items-center justify-between gap-4 md:gap-8 shadow-2xl border border-white/10 max-w-4xl w-full">
+          <nav className="glass-panel rounded-full px-5 py-3 flex items-center justify-between gap-4 md:gap-8 shadow-2xl border border-white/10 max-w-4xl w-full backdrop-blur-vision hover:border-primary/30 transition-colors duration-500">
             {/* Brand Logo */}
             <a
-              href="#"
+              href="#hero"
+              onClick={handleLogoClick}
               onMouseEnter={() => setCursor('hover-link', 'Home')}
               onMouseLeave={resetCursor}
               className="flex items-center gap-2.5 group shrink-0"
@@ -90,17 +99,17 @@ export const Navbar = ({ onOpenCommandPalette, onOpenMobileDrawer }) => {
                     href={item.href}
                     onMouseEnter={() => setCursor('hover-link')}
                     onMouseLeave={resetCursor}
-                    className={`relative px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    className={`relative px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-colors ${
                       isActive
-                        ? 'text-text-primary font-semibold'
+                        ? 'text-text-primary'
                         : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="activeNavDock"
-                        className="absolute inset-0 bg-primary/20 rounded-full border border-primary/40 -z-10"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        className="absolute inset-0 bg-primary/20 rounded-full border border-primary/40 -z-10 shadow-[0_0_12px_rgba(249,115,22,0.15)]"
+                        transition={{ type: 'spring', stiffness: 350, damping: 22, mass: 0.7 }} // Liquid spring morph
                       />
                     )}
                     {item.label}

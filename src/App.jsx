@@ -7,6 +7,8 @@ import { SEO } from './components/shared/SEO';
 import { CustomCursor } from './components/cursor/CustomCursor';
 import { CursorSpotlight } from './components/cursor/CursorSpotlight';
 import { NoiseOverlay } from './components/background/NoiseOverlay';
+import { AnimatedGrid } from './components/background/AnimatedGrid';
+import { FloatingBoxes } from './components/background/FloatingBoxes';
 import { ProgressBar } from './components/ui/ProgressBar';
 import { Navbar } from './components/layout/Navbar';
 import { MobileDrawer } from './components/layout/MobileDrawer';
@@ -54,6 +56,8 @@ export default function App() {
 
             {isLoadingComplete && (
               <div className="relative min-h-screen bg-bg-dark text-text-primary selection:bg-primary/30 selection:text-primary transition-colors duration-300">
+                <AnimatedGrid />
+                <FloatingBoxes />
                 <Navbar
                   onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
                   onOpenMobileDrawer={() => setIsMobileDrawerOpen(true)}

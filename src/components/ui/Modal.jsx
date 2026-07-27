@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { modalTransition } from '../../animations/transitions';
+import { modalTransition } from '../../motion';
 
 export const Modal = ({ isOpen, onClose, title, children }) => {
   useEffect(() => {

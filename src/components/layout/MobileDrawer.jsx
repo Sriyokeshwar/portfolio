@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Code, Briefcase, FolderGit2, Award, BarChart2, Mail, FileText } from 'lucide-react';
+import { X, User, Code, Briefcase, FolderGit2, Award, BarChart2, Mail, FileText, GraduationCap } from 'lucide-react';
 import { profile } from '../../data/profile';
 
 const drawerLinks = [
   { label: 'About', href: '#about', icon: User },
+  { label: 'Education', href: '#education', icon: GraduationCap },
   { label: 'Skills', href: '#skills', icon: Code },
   { label: 'Experience', href: '#experience', icon: Briefcase },
   { label: 'Projects', href: '#projects', icon: FolderGit2 },

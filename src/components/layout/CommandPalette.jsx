@@ -10,16 +10,18 @@ import {
   BarChart2,
   Mail,
   FileText,
+  GraduationCap,
   Github,
   Linkedin,
   Instagram,
   PieChart,
 } from 'lucide-react';
 import { profile } from '../../data/profile';
-import { modalTransition } from '../../animations/transitions';
+import { modalTransition } from '../../motion';
 
 const commands = [
   { id: 'about', label: 'Go to About', section: '#about', icon: User },
+  { id: 'education', label: 'Go to Education', section: '#education', icon: GraduationCap },
   { id: 'skills', label: 'Go to Skills', section: '#skills', icon: Code },
   { id: 'experience', label: 'Go to Experience', section: '#experience', icon: Briefcase },
   { id: 'projects', label: 'Go to Projects', section: '#projects', icon: FolderGit2 },

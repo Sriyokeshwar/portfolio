@@ -1,15 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useCursor } from '../../context/CursorContext';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Maximize2, MoveHorizontal } from 'lucide-react';
+import { tokens } from '../../theme/tokens';
 
 export const CustomCursor = () => {
   const { cursorState } = useCursor();
   const prefersReducedMotion = useReducedMotion();
-  const [coords, setCoords] = useState({ x: -100, y: -100 });
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Use Framer Motion raw values + springs for smooth lag-free GPU cursor trails
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  const dotSpringConfig = { damping: 40, stiffness: 700, mass: 0.08 };
+  const ringSpringConfig = { damping: 28, stiffness: 220, mass: 0.5 }; // Slower, heavier spring for high-fidelity trail
+
+  const dotX = useSpring(mouseX, dotSpringConfig);
+  const dotY = useSpring(mouseY, dotSpringConfig);
+  
+  const ringX = useSpring(mouseX, ringSpringConfig);
+  const ringY = useSpring(mouseY, ringSpringConfig);
 
   useEffect(() => {
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || prefersReducedMotion) {
@@ -18,7 +31,8 @@ export const CustomCursor = () => {
     }
 
     const handleMouseMove = (e) => {
-      setCoords({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
@@ -39,43 +53,66 @@ export const CustomCursor = () => {
   if (isTouchDevice || !isVisible) return null;
 
   const isHovered = cursorState.type !== 'default';
+  
+  // Adaptive custom colors matching theme tokens
+  let cursorColor = tokens.colors.primary; // Orange default
+  if (cursorState.label?.toLowerCase() === 'code' || cursorState.type === 'hover-link') {
+    cursorColor = tokens.colors.primary;
+  } else if (cursorState.label?.toLowerCase() === 'live' || cursorState.label?.toLowerCase() === 'contact') {
+    cursorColor = tokens.colors.secondary; // Cyan
+  } else if (cursorState.label?.toLowerCase() === 'resume') {
+    cursorColor = tokens.colors.accent; // Violet
+  }
+
+  const ringBackgroundColor = isHovered ? `${cursorColor}1A` : 'rgba(0, 0, 0, 0)';
 
   return (
     <>
-      {/* Primary Small Dot */}
+      {/* Primary Dot (Stiff spring, follows pointer instantly, uses Difference mix-blend) */}
       <motion.div
-        className="fixed top-0 left-0 w-2.5 h-2.5 bg-primary rounded-full pointer-events-none z-50 mix-blend-difference"
-        animate={{
-          x: coords.x - 5,
-          y: coords.y - 5,
-          scale: cursorState.type === 'text' ? 0.3 : isHovered ? 0.5 : 1,
+        className="fixed w-2 h-2 rounded-full pointer-events-none mix-blend-difference -translate-x-1/2 -translate-y-1/2"
+        style={{
+          left: dotX,
+          top: dotY,
+          backgroundColor: cursorColor,
+          zIndex: tokens.zIndex.cursor,
         }}
-        transition={{ type: 'spring', damping: 30, stiffness: 450, mass: 0.1 }}
+        animate={{
+          scale: cursorState.type === 'text' ? 0.3 : isHovered ? 0.6 : 1,
+        }}
+        transition={{ type: 'spring', damping: 30, stiffness: 450 }}
       />
 
-      {/* Expanding Ring & Tooltip Label */}
+      {/* Outer Ring & Label (Bouncy lag/trail spring, expands and morphs on hover) */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full border border-primary/60 pointer-events-none z-50 flex items-center justify-center backdrop-blur-[2px]"
-        animate={{
-          x: coords.x - (isHovered ? 28 : 16),
-          y: coords.y - (isHovered ? 28 : 16),
-          width: isHovered ? 56 : 32,
-          height: isHovered ? 56 : 32,
-          backgroundColor: isHovered ? 'rgba(249, 115, 22, 0.12)' : 'transparent',
-          borderColor: isHovered ? 'rgba(249, 115, 22, 0.8)' : 'rgba(249, 115, 22, 0.3)',
+        className="fixed rounded-full border pointer-events-none flex items-center justify-center backdrop-blur-[1px] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          left: ringX,
+          top: ringY,
+          borderColor: cursorColor,
+          zIndex: tokens.zIndex.cursor,
         }}
-        transition={{ type: 'spring', damping: 25, stiffness: 350, mass: 0.2 }}
+        animate={{
+          width: isHovered ? 64 : 28,
+          height: isHovered ? 64 : 28,
+          backgroundColor: ringBackgroundColor,
+          boxShadow: isHovered ? `0 0 16px ${cursorColor}4D` : 'none', // Glow
+        }}
+        transition={{ type: 'spring', damping: 25, stiffness: 280 }}
       >
         {cursorState.label && (
-          <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+          <span 
+            className="text-[9px] font-extrabold uppercase tracking-widest"
+            style={{ color: cursorColor }}
+          >
             {cursorState.label}
           </span>
         )}
         {cursorState.type === 'hover-image' && !cursorState.label && (
-          <Maximize2 className="w-4 h-4 text-primary" />
+          <Maximize2 className="w-3.5 h-3.5" style={{ color: cursorColor }} />
         )}
         {cursorState.type === 'hover-drag' && !cursorState.label && (
-          <MoveHorizontal className="w-4 h-4 text-primary" />
+          <MoveHorizontal className="w-3.5 h-3.5" style={{ color: cursorColor }} />
         )}
       </motion.div>
     </>

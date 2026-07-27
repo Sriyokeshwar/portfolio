@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 import { profile } from '../data/profile';
 import { BarChart3, ExternalLink, Maximize2, Minimize2, Play, CheckCircle2, Layers } from 'lucide-react';
 import { useCursor } from '../context/CursorContext';
-import { fadeUp } from '../animations/variants';
+import { fadeUp } from '../motion';
 
 export const Analytics = () => {
   const [isInteractive, setIsInteractive] = useState(false);

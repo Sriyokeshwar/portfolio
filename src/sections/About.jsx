@@ -1,133 +1,228 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionHeading } from '../components/shared/SectionHeading';
-import { AnimatedCounter } from '../components/shared/AnimatedCounter';
 import { GlassCard } from '../components/ui/GlassCard';
+import { AnimatedCounter } from '../components/shared/AnimatedCounter';
 import { profile } from '../data/profile';
-import { fadeUp, fadeLeft, fadeRight } from '../animations/variants';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const journeySteps = [
   {
     step: '01',
-    title: 'Fundamentals & CS Foundations',
-    desc: 'Mastered core algorithms, data structures, and computer science concepts during B.Sc Computer Science at A.V.C. College (CGPA 7.94).',
+    title: 'CS Foundations',
+    short: 'Foundations',
+    desc: 'Mastered core algorithms, databases, and computer science concepts during B.Sc Computer Science at A.V.C. College (CGPA 7.94). Established strong algorithmic problem-solving habits.',
   },
   {
     step: '02',
-    title: 'Modern Frontend & React',
-    desc: 'Deep-dived into JavaScript ES6+, React, component architectures, and responsive utility-first styling with Tailwind CSS.',
+    title: 'Modern Frontend',
+    short: 'Frontend',
+    desc: 'Deep-dived into modern JavaScript ES6+, React, component states, and responsive styling. Crafted responsive layouts with clean styling rules.',
   },
   {
     step: '03',
-    title: 'Full Stack MERN Engineering',
-    desc: 'Engineered production-grade REST APIs, MongoDB schemas, and Node/Express backends during 3-month NoviTech R&D and Vebbox internships.',
+    title: 'Full Stack MERN',
+    short: 'MERN Stack',
+    desc: 'Engineered production-grade REST APIs, MongoDB database collections, and Express endpoints during internships at NoviTech R&D and Vebbox Software Solutions.',
   },
   {
     step: '04',
-    title: 'AI-Assisted Development',
-    desc: 'Earned IBM Prompt Engineering certification and integrated advanced LLM workflows to accelerate code quality, testing, and system design.',
+    title: 'AI Engineering',
+    short: 'AI Systems',
+    desc: 'Earned IBM Prompt Engineering certification. Utilized LLMs and advanced prompt design patterns to accelerate feature releases and system optimization.',
   },
   {
     step: '05',
-    title: 'VisionOS-Tier UI/UX Craft',
-    desc: 'Focused on shipping futuristic, fluid web applications with micro-interactions, liquid glassmorphism, and performance optimization.',
+    title: 'VisionOS-Tier UI',
+    short: 'Interaction',
+    desc: 'Crafting premium interactive interfaces featuring glassmorphism, depth transforms, and optimized micro-interactions targeting 60FPS performance.',
   },
 ];
 
 export const About = () => {
+  const containerRef = useRef(null);
+  const leftColumnRef = useRef(null);
+  const rightColumnRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || isMobile) return;
+
+    // Pin the about container while milestones scroll
+    const pinTrigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: `+=${journeySteps.length * 80}%`,
+      pin: true,
+      pinSpacing: true,
+      scrub: true,
+    });
+
+    // Create animations for step activation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: `+=${journeySteps.length * 80}%`,
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          // Map progress to active index (0 to 4)
+          const index = Math.min(
+            Math.floor(progress * journeySteps.length),
+            journeySteps.length - 1
+          );
+          setActiveIndex(index);
+        },
+      },
+    });
+
+    // Animate the vertical progress line filling up
+    tl.fromTo(
+      '.timeline-progress-indicator',
+      { scaleY: 0 },
+      { scaleY: 1, ease: 'none', duration: 1 }
+    );
+
+    return () => {
+      pinTrigger.kill();
+      tl.kill();
+    };
+  }, [prefersReducedMotion, isMobile]);
+
   return (
-    <section id="about" className="py-24 px-6 relative z-10">
+    <section
+      ref={containerRef}
+      id="about"
+      className="py-24 px-6 relative z-10 bg-[#050816] overflow-hidden"
+    >
       <div className="max-w-6xl mx-auto space-y-16">
         <SectionHeading
           badge="Story & Evolution"
           title="Driven by Craft, Powered by Code"
-          subtitle="A progressive journey from computer science fundamentals to building high-craft, AI-assisted full stack web applications."
+          subtitle="A progressive journey from computer science fundamentals to building high-craft full stack web applications."
         />
 
-        {/* Main Grid: Anchor Portrait + Journey Progression */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Anchor Portrait & Candid Strip */}
-          <motion.div
-            variants={fadeLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="lg:col-span-5 space-y-6"
-          >
-            <GlassCard className="relative overflow-hidden group p-4">
-              <img
-                src={profile.assets.profileTransparent}
-                alt={profile.name}
-                className="w-full h-[420px] object-cover object-top rounded-2xl transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-80" />
-              <div className="absolute bottom-6 left-6 right-6">
-                <p className="text-sm font-semibold text-text-primary">
-                  {profile.name}
+        {isMobile ? (
+          // Mobile View: Simple chronological vertical stack
+          <div className="space-y-8 pl-4 border-l border-white/10 relative">
+            {journeySteps.map((j) => (
+              <div key={j.step} className="relative space-y-2">
+                <span className="absolute -left-[25px] top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-bg-dark" />
+                <span className="text-[10px] font-mono text-primary uppercase font-bold tracking-wider">
+                  Step {j.step} — {j.short}
+                </span>
+                <h3 className="text-lg font-bold font-heading text-text-primary">
+                  {j.title}
+                </h3>
+                <p className="text-xs text-text-muted leading-relaxed">
+                  {j.desc}
                 </p>
-                <p className="text-xs text-primary">{profile.location}</p>
               </div>
-            </GlassCard>
+            ))}
+          </div>
+        ) : (
+          // Desktop View: Split Screen storytelling timeline
+          <div className="grid grid-cols-12 gap-12 items-center min-h-[50vh]">
+            
+            {/* Left Column: Interactive milestones timeline list */}
+            <div ref={leftColumnRef} className="col-span-5 relative pl-8 border-l border-white/10 h-full flex flex-col justify-between py-6">
+              
+              {/* GSAP driven background scroll indicator line */}
+              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5 origin-top" />
+              <div 
+                className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary via-orange-500 to-secondary origin-top timeline-progress-indicator"
+                style={{ transformScaleY: 0 }}
+              />
 
-            {/* Candid Beyond the Code Strip */}
-            <div className="space-y-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-text-muted">
-                Beyond the Code:
-              </span>
-              <div className="grid grid-cols-2 gap-3">
-                <img
-                  src={profile.assets.candid1}
-                  alt="Candid moment 1"
-                  className="rounded-xl h-28 w-full object-cover glass-panel hover:scale-105 transition-transform duration-300"
-                />
-                <img
-                  src={profile.assets.candid2}
-                  alt="Candid moment 2"
-                  className="rounded-xl h-28 w-full object-cover glass-panel hover:scale-105 transition-transform duration-300"
-                />
-              </div>
+              {journeySteps.map((j, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <div
+                    key={j.step}
+                    className={`relative cursor-pointer transition-all duration-500 py-3 ${
+                      isActive ? 'translate-x-3' : 'opacity-40 hover:opacity-75'
+                    }`}
+                  >
+                    {/* Active Glow Dot */}
+                    <span 
+                      className={`absolute -left-[41px] top-1/2 -translate-y-1/2 w-4.5 h-4.5 rounded-full border-2 transition-all duration-500 flex items-center justify-center ${
+                        isActive 
+                          ? 'bg-primary border-primary shadow-[0_0_12px_#f97316]' 
+                          : 'bg-bg-dark border-white/20'
+                      }`}
+                    >
+                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />}
+                    </span>
+
+                    <span className={`text-[10px] font-mono uppercase tracking-widest ${isActive ? 'text-primary font-bold' : 'text-text-muted'}`}>
+                      Step {j.step}
+                    </span>
+                    <h3 className={`text-xl font-bold font-heading transition-colors duration-500 ${isActive ? 'text-text-primary' : 'text-text-muted'}`}>
+                      {j.title}
+                    </h3>
+                  </div>
+                );
+              })}
             </div>
-          </motion.div>
 
-          {/* Right Column: Story Progression Timeline */}
-          <motion.div
-            variants={fadeRight}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="lg:col-span-7 space-y-6"
-          >
-            <div className="relative border-l border-white/10 pl-6 space-y-8">
-              {journeySteps.map((j) => (
-                <div key={j.step} className="relative group">
-                  {/* Timeline Dot */}
-                  <span className="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-bg-dark border-2 border-primary group-hover:bg-primary transition-colors" />
-
-                  <span className="text-xs font-mono text-primary uppercase font-bold tracking-wider">
-                    Step {j.step}
-                  </span>
-                  <h3 className="text-lg md:text-xl font-bold font-heading text-text-primary">
-                    {j.title}
-                  </h3>
-                  <p className="text-sm text-text-muted leading-relaxed mt-1">
-                    {j.desc}
-                  </p>
-                </div>
-              ))}
+            {/* Right Column: Dynamic floating descriptions & Portrait anchor */}
+            <div ref={rightColumnRef} className="col-span-7 flex flex-col justify-center items-center relative min-h-[360px] w-full">
+              {journeySteps.map((j, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <div
+                    key={j.step}
+                    className={`absolute inset-x-0 transition-all duration-700 transform ${
+                      isActive 
+                        ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto z-10' 
+                        : 'opacity-0 translate-y-8 scale-95 pointer-events-none z-0'
+                    }`}
+                  >
+                    <GlassCard 
+                      glowColor={idx % 2 === 0 ? 'rgba(249,115,22,0.2)' : 'rgba(6,182,212,0.2)'}
+                      className="p-8 space-y-4 border border-white/10"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono text-primary uppercase font-bold tracking-wider">
+                          Journey Milestone
+                        </span>
+                        <span className="text-3xl font-extrabold font-mono text-white/10">
+                          {j.step}
+                        </span>
+                      </div>
+                      <h4 className="text-2xl font-extrabold font-heading text-text-primary">
+                        {j.title}
+                      </h4>
+                      <p className="text-sm text-text-muted leading-relaxed">
+                        {j.desc}
+                      </p>
+                    </GlassCard>
+                  </div>
+                );
+              })}
             </div>
-          </motion.div>
-        </div>
+          </div>
+        )}
 
-        {/* Real Stat Counters Strip */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8"
-        >
+        {/* Counter Stats Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-white/10">
           {profile.stats.map((stat) => (
-            <GlassCard key={stat.label} className="text-center p-6">
+            <GlassCard key={stat.label} className="text-center p-5 border border-white/10">
               <AnimatedCounter
                 value={stat.value}
                 suffix={stat.suffix}
@@ -138,7 +233,7 @@ export const About = () => {
               </p>
             </GlassCard>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

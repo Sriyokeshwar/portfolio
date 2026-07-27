@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionHeading } from '../components/shared/SectionHeading';
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
@@ -22,9 +24,13 @@ import {
   Instagram,
   Figma,
   AlertCircle,
+  CheckCircle2,
 } from 'lucide-react';
 import { useCursor } from '../context/CursorContext';
-import { fadeUp } from '../animations/variants';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { cn } from '../utils/cn';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const socialIcons = [
   { name: 'GitHub', href: profile.links.github, icon: Github },
@@ -37,13 +43,63 @@ const socialIcons = [
 
 export const Contact = () => {
   const { setCursor, resetCursor } = useCursor();
+  const prefersReducedMotion = useReducedMotion();
+
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [focusedField, setFocusedField] = useState('');
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('');
   const [statusType, setStatusType] = useState('success');
   const [isSending, setIsSending] = useState(false);
+
+  const contactSectionRef = useRef(null);
+
+  // GSAP Cinematic Reveal triggers
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: contactSectionRef.current,
+        start: 'top bottom-=50px',
+        end: 'bottom bottom',
+        scrub: 1,
+      }
+    });
+
+    // Darken the background layers
+    tl.to('.contact-darken-overlay', {
+      opacity: 0.92,
+      duration: 1,
+    }, 0);
+
+    // Rise the contact card
+    tl.fromTo('.contact-main-card',
+      { y: 150, scale: 0.95, opacity: 0 },
+      { y: 0, scale: 1, opacity: 1, duration: 1, ease: 'power2.out' },
+      0
+    );
+
+    // Fade in particles
+    tl.fromTo('.contact-reveal-particles',
+      { opacity: 0, scale: 0.7 },
+      { opacity: 0.6, scale: 1, duration: 1 },
+      0
+    );
+
+    // Social icon rotation staggers
+    tl.fromTo('.contact-social-item',
+      { rotate: -35, opacity: 0, scale: 0.6 },
+      { rotate: 0, opacity: 1, scale: 1, stagger: 0.08, duration: 1, ease: 'back.out(1.7)' },
+      0.2
+    );
+
+    return () => {
+      tl.kill();
+    };
+  }, [prefersReducedMotion]);
 
   const triggerToast = (msg) => {
     setToastMessage(msg);
@@ -96,45 +152,69 @@ export const Contact = () => {
       if (!res.ok) throw new Error('Request failed');
 
       setStatusType('success');
-      setStatus("Thank you! Your message has been sent — I'll reply soon.");
+      setStatus(
+        `Thanks! Your message has been submitted. If you do not hear back soon, email me directly at ${profile.email}. If this is your first time using FormSubmit, please check your inbox for the activation email.`
+      );
       setFormData({ name: '', email: '', message: '' });
       setErrors({});
     } catch (err) {
       setStatusType('error');
       setStatus(
-        `Couldn't send automatically — please email me directly at ${profile.email}.`
+        `The automated form is not available yet. Please email me directly at ${profile.email} and check your inbox for the FormSubmit activation email.`
       );
     } finally {
       setIsSending(false);
-      setTimeout(() => setStatus(''), 6000);
+      setTimeout(() => setStatus(''), 8000);
     }
   };
 
+  const getLabelClass = (fieldName, hasValue) =>
+    cn(
+      'absolute left-4 top-3.5 text-xs text-text-muted transition-all duration-300 pointer-events-none origin-left select-none',
+      focusedField === fieldName || hasValue
+        ? 'transform -translate-y-6 scale-90 text-primary bg-[#050816] px-2 z-10'
+        : 'transform translate-y-0 scale-100 text-sm'
+    );
+
   return (
-    <section id="contact" className="py-24 px-6 relative z-10">
-      <div className="max-w-6xl mx-auto space-y-16">
+    <section
+      ref={contactSectionRef}
+      id="contact"
+      className="py-24 px-6 relative overflow-hidden bg-[#050816]"
+    >
+      {/* Cinematic Darken Overlay */}
+      <div className="contact-darken-overlay absolute inset-0 bg-[#020308] opacity-0 pointer-events-none transition-opacity duration-700 z-0" />
+
+      {/* Floating Particles Overlay */}
+      <div className="contact-reveal-particles absolute inset-0 pointer-events-none overflow-hidden opacity-0 z-[1] select-none">
+        <div className="absolute top-[20%] left-[15%] w-2 h-2 rounded-full bg-primary/40 blur-[1px] animate-pulse" />
+        <div className="absolute top-[60%] left-[80%] w-3 h-3 rounded-full bg-secondary/40 blur-[1px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute top-[40%] left-[75%] w-2 h-2 rounded-full bg-accent/40 blur-[1px] animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-[75%] left-[25%] w-3 h-3 rounded-full bg-primary/40 blur-[1px] animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <div className="max-w-6xl mx-auto space-y-16 relative z-10">
         <SectionHeading
           badge="Get in Touch"
           title="Let's Build Together"
-          subtitle="Open for full-time roles, internships, and high-impact full stack collaborations."
+          subtitle="Open for full-time developer roles, internships, and high-craft collaborations."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Direct Info & Quick Action Buttons */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="lg:col-span-5 space-y-6"
-          >
-            <GlassCard className="p-8 space-y-6">
+        {/* Rising Glass Contact Card */}
+        <div className="contact-main-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-start will-change-transform">
+          
+          {/* Left Panel: Contact info */}
+          <div className="lg:col-span-5 space-y-6">
+            <GlassCard
+              glowColor="rgba(6, 182, 212, 0.3)"
+              className="p-8 space-y-6 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+            >
               <Badge />
 
               <div className="space-y-4 pt-2">
-                {/* Email Block */}
+                {/* Email Info */}
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-full glass-panel text-primary">
+                  <div className="p-3 rounded-full glass-panel border border-white/10 text-primary">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
@@ -151,10 +231,10 @@ export const Contact = () => {
                   </div>
                 </div>
 
-                {/* Phone & Direct Action Buttons */}
+                {/* Phone & Direct Contacts */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className="p-3 rounded-full glass-panel text-secondary">
+                    <div className="p-3 rounded-full glass-panel border border-white/10 text-secondary">
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
@@ -165,17 +245,15 @@ export const Contact = () => {
                     </div>
                   </div>
 
-                  {/* Call, WhatsApp, Copy Buttons */}
-                  <div className="flex items-center gap-2 pt-1 pl-12">
+                  <div className="flex items-center gap-2 pt-1 pl-12 flex-wrap">
                     <a
                       href={`tel:${profile.phoneRaw}`}
                       onMouseEnter={() => setCursor('hover-link', 'Call')}
                       onMouseLeave={resetCursor}
                       className="px-3 py-1.5 rounded-full text-xs font-semibold glass-panel border border-secondary/30 text-secondary hover:bg-secondary/10 transition-colors flex items-center gap-1"
                     >
-                      <PhoneCall className="w-3 h-3" /> Call
+                      <PhoneCall className="w-3.5 h-3.5" /> Call
                     </a>
-
                     <a
                       href={profile.whatsappUrl}
                       target="_blank"
@@ -184,23 +262,14 @@ export const Contact = () => {
                       onMouseLeave={resetCursor}
                       className="px-3 py-1.5 rounded-full text-xs font-semibold glass-panel border border-success/30 text-success hover:bg-success/10 transition-colors flex items-center gap-1"
                     >
-                      <MessageCircle className="w-3 h-3" /> WhatsApp
+                      <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
                     </a>
-
-                    <button
-                      onClick={copyPhone}
-                      onMouseEnter={() => setCursor('hover-link', 'Copy')}
-                      onMouseLeave={resetCursor}
-                      className="px-3 py-1.5 rounded-full text-xs font-semibold glass-panel border border-white/20 text-text-muted hover:text-text-primary transition-colors flex items-center gap-1"
-                    >
-                      <Copy className="w-3 h-3" /> Copy
-                    </button>
                   </div>
                 </div>
 
                 {/* Location */}
                 <div className="flex items-center gap-3 pt-1">
-                  <div className="p-3 rounded-full glass-panel text-accent">
+                  <div className="p-3 rounded-full glass-panel border border-white/10 text-accent">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
@@ -212,7 +281,7 @@ export const Contact = () => {
                 </div>
               </div>
 
-              {/* Resume Button */}
+              {/* Resume download link */}
               <div className="pt-4 border-t border-white/10">
                 <Button
                   href={profile.assets.resumePdf}
@@ -221,16 +290,16 @@ export const Contact = () => {
                   variant="primary"
                   size="md"
                   icon={FileText}
-                  className="w-full justify-center"
+                  className="w-full justify-center shadow-glow"
                 >
-                  Download Official Resume
+                  Download Resume
                 </Button>
               </div>
 
-              {/* Social Links */}
+              {/* Connected Social icon row */}
               <div className="pt-4 space-y-2">
                 <span className="text-xs font-mono uppercase tracking-wider text-text-muted">
-                  Follow & Connect:
+                  Find me online:
                 </span>
                 <div className="flex items-center gap-2.5 flex-wrap">
                   {socialIcons.map((soc) => {
@@ -241,7 +310,7 @@ export const Contact = () => {
                         href={soc.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2.5 rounded-full glass-panel text-text-muted hover:text-primary hover:border-primary/40 transition-all duration-300 hover:scale-110"
+                        className="contact-social-item p-2.5 rounded-full glass-panel text-text-muted border border-white/10 hover:text-primary hover:border-primary/40 transition-all duration-300 hover:scale-110"
                         aria-label={soc.name}
                       >
                         <Icon className="w-4 h-4" />
@@ -251,106 +320,121 @@ export const Contact = () => {
                 </div>
               </div>
             </GlassCard>
-          </motion.div>
+          </div>
 
-          {/* Right Column: Interactive Glass Contact Form */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="lg:col-span-7"
-          >
-            <GlassCard className="p-8 space-y-6">
-              <h3 className="text-2xl font-bold font-heading text-text-primary">
+          {/* Right Panel: Active Contact Form */}
+          <div className="lg:col-span-7">
+            <GlassCard
+              glowColor="rgba(249, 115, 22, 0.3)"
+              className="p-8 space-y-6 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+            >
+              <h3 className="text-2xl font-extrabold font-heading text-text-primary">
                 Send a Message
               </h3>
 
-              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-                <div>
-                  <label className="block text-xs font-medium text-text-muted mb-1">
-                    Your Name
-                  </label>
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                
+                {/* Name */}
+                <div className="relative">
                   <input
                     type="text"
                     value={formData.name}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField('')}
                     onChange={(e) => {
                       setFormData({ ...formData, name: e.target.value });
                       if (errors.name) setErrors({ ...errors, name: '' });
                     }}
-                    placeholder="Enter your name"
-                    className={`w-full px-4 py-3 rounded-xl glass-panel text-text-primary placeholder-text-muted text-sm focus:outline-none transition-colors ${
-                      errors.name
-                        ? 'border-red-500/80 focus:border-red-500'
-                        : 'focus:border-primary/50'
-                    }`}
+                    className={cn(
+                      'w-full px-4 py-3.5 rounded-xl glass-panel border border-white/10 text-text-primary text-sm focus:outline-none transition-all duration-300 bg-transparent',
+                      errors.name ? 'border-red-500/80 focus:border-red-500' : 'focus:border-primary/50'
+                    )}
                   />
+                  <label className={getLabelClass('name', formData.name)}>
+                    Your Name
+                  </label>
                   {errors.name && (
-                    <p className="text-[11px] font-mono text-red-400 mt-1 flex items-center gap-1">
+                    <p className="text-[11px] font-mono text-red-400 mt-1.5 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" /> {errors.name}
                     </p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-text-muted mb-1">
-                    Your Email Address
-                  </label>
+                {/* Email */}
+                <div className="relative">
                   <input
                     type="email"
                     value={formData.email}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField('')}
                     onChange={(e) => {
                       setFormData({ ...formData, email: e.target.value });
                       if (errors.email) setErrors({ ...errors, email: '' });
                     }}
-                    placeholder="name@company.com"
-                    className={`w-full px-4 py-3 rounded-xl glass-panel text-text-primary placeholder-text-muted text-sm focus:outline-none transition-colors ${
-                      errors.email
-                        ? 'border-red-500/80 focus:border-red-500'
-                        : 'focus:border-primary/50'
-                    }`}
+                    className={cn(
+                      'w-full px-4 py-3.5 rounded-xl glass-panel border border-white/10 text-text-primary text-sm focus:outline-none transition-all duration-300 bg-transparent',
+                      errors.email ? 'border-red-500/80 focus:border-red-500' : 'focus:border-primary/50'
+                    )}
                   />
+                  <label className={getLabelClass('email', formData.email)}>
+                    Email Address
+                  </label>
                   {errors.email && (
-                    <p className="text-[11px] font-mono text-red-400 mt-1 flex items-center gap-1">
+                    <p className="text-[11px] font-mono text-red-400 mt-1.5 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" /> {errors.email}
                     </p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-text-muted mb-1">
-                    Message
-                  </label>
+                {/* Message */}
+                <div className="relative">
                   <textarea
                     rows={4}
                     value={formData.message}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField('')}
                     onChange={(e) => {
                       setFormData({ ...formData, message: e.target.value });
                       if (errors.message) setErrors({ ...errors, message: '' });
                     }}
-                    placeholder="Tell me about your project or role opportunity..."
-                    className={`w-full px-4 py-3 rounded-xl glass-panel text-text-primary placeholder-text-muted text-sm focus:outline-none transition-colors resize-none ${
-                      errors.message
-                        ? 'border-red-500/80 focus:border-red-500'
-                        : 'focus:border-primary/50'
-                    }`}
+                    className={cn(
+                      'w-full px-4 py-3.5 rounded-xl glass-panel border border-white/10 text-text-primary text-sm focus:outline-none transition-all duration-300 resize-none bg-transparent',
+                      errors.message ? 'border-red-500/80 focus:border-red-500' : 'focus:border-primary/50'
+                    )}
                   />
+                  <label className={getLabelClass('message', formData.message)}>
+                    Message Content
+                  </label>
                   {errors.message && (
-                    <p className="text-[11px] font-mono text-red-400 mt-1 flex items-center gap-1">
+                    <p className="text-[11px] font-mono text-red-400 mt-1.5 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" /> {errors.message}
                     </p>
                   )}
                 </div>
 
                 {status && (
-                  <p
-                    className={`text-xs font-medium font-mono ${
-                      statusType === 'success' ? 'text-success' : 'text-red-400'
-                    }`}
+                  <motion.p
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={cn(
+                      'text-xs font-semibold font-mono flex items-center gap-1.5 p-3 rounded-lg border',
+                      statusType === 'success' 
+                        ? 'text-success bg-success/5 border-success/20' 
+                        : 'text-red-400 bg-red-500/5 border-red-500/20'
+                    )}
                   >
+                    {statusType === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
                     {status}
-                  </p>
+                  </motion.p>
                 )}
+
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-[11px] font-mono text-text-muted leading-relaxed">
+                  If the automated form does not respond immediately, email me directly at{' '}
+                  <a href={`mailto:${profile.email}`} className="text-primary underline decoration-primary/40 underline-offset-2">
+                    {profile.email}
+                  </a>
+                  . If this is your first time using FormSubmit, please check your inbox for the confirmation email so the form can be activated.
+                </div>
 
                 <Button
                   type="submit"
@@ -358,13 +442,13 @@ export const Contact = () => {
                   size="lg"
                   icon={Send}
                   disabled={isSending}
-                  className="w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-glow duration-300"
                 >
                   {isSending ? 'Sending…' : 'Send Message'}
                 </Button>
               </form>
             </GlassCard>
-          </motion.div>
+          </div>
         </div>
       </div>
 

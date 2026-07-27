@@ -20,17 +20,17 @@ export const Button = ({
   const [ripples, setRipples] = useState([]);
 
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium transition-all duration-300 rounded-full select-none overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary/50';
+    'relative inline-flex items-center justify-center font-medium transition-[background-color,border-color,color,box-shadow] duration-300 rounded-full select-none overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary/50 transform-gpu z-10';
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-primary via-orange-500 to-amber-500 text-white shadow-glow hover:shadow-orange-500/50 hover:brightness-110 active:scale-95',
+      'bg-gradient-to-r from-primary via-orange-500 to-amber-500 text-white shadow-glow hover:shadow-orange-500/70 hover:brightness-110',
     secondary:
-      'bg-gradient-to-r from-secondary to-cyan-500 text-white shadow-cyanGlow hover:shadow-cyan-500/50 hover:brightness-110 active:scale-95',
+      'bg-gradient-to-r from-secondary to-cyan-500 text-white shadow-cyanGlow hover:shadow-cyan-500/70 hover:brightness-110',
     outline:
-      'border border-surface-border text-text-primary bg-bg-card/40 backdrop-blur-md hover:border-primary/50 hover:bg-primary/10 active:scale-95',
+      'border border-surface-border text-text-primary bg-bg-card/40 backdrop-blur-md hover:border-primary/50 hover:bg-primary/10',
     ghost:
-      'text-text-muted hover:text-text-primary hover:bg-white/5 active:scale-95',
+      'text-text-muted hover:text-text-primary hover:bg-white/5',
   };
 
   const sizes = {
@@ -68,16 +68,24 @@ export const Button = ({
       className={cn(baseStyles, variants[variant], sizes[size], className)}
       {...props}
     >
+      {/* Dynamic Specular Sheen (Mouse-following reflection shine) */}
+      <span
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-overlay"
+        style={{
+          background: `radial-gradient(circle 60px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.4), transparent 80%)`,
+        }}
+      />
+
       {/* Ripple elements */}
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className="absolute bg-white/30 rounded-full animate-ping pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
+          className="absolute bg-white/40 rounded-full animate-ping pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
           style={{
             left: ripple.x,
             top: ripple.y,
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
           }}
         />
       ))}
