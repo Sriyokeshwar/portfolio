@@ -11,6 +11,10 @@ lerna-debug.log*
 node_modules/
 jspm_packages/
 
+*.zip
+project.zip
+project - claude.zip
+
 # Build outputs
 dist/
 dist-ssr/
