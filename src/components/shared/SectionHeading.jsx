@@ -12,7 +12,7 @@ export const SectionHeading = ({ title, subtitle, badge }) => {
       className="text-center max-w-2xl mx-auto mb-16 space-y-3"
     >
       {badge && (
-        <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary glass-panel px-3.5 py-1 rounded-full border border-primary/30 mb-2">
+        <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary liquid-glass px-3.5 py-1 rounded-full border border-white/15 mb-2">
           {badge}
         </span>
       )}
@@ -24,7 +24,7 @@ export const SectionHeading = ({ title, subtitle, badge }) => {
           {subtitle}
         </p>
       )}
-      <div className="w-12 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto mt-4" />
+      <div className="w-12 h-1 bg-gradient-to-r from-primary via-accent to-secondary rounded-full mx-auto mt-4" />
     </motion.div>
   );
 };

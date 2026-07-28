@@ -206,7 +206,7 @@ export const Contact = () => {
           {/* Left Panel: Contact info */}
           <div className="lg:col-span-5 space-y-6">
             <GlassCard
-              glowColor="rgba(6, 182, 212, 0.3)"
+              glowColor="rgba(96, 165, 250, 0.24)"
               className="p-8 space-y-6 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
             >
               <Badge />
@@ -290,7 +290,7 @@ export const Contact = () => {
                   variant="primary"
                   size="md"
                   icon={FileText}
-                  className="w-full justify-center shadow-glow"
+                  className="w-full justify-center shadow-[0_0_30px_rgba(96,165,250,0.2)]"
                 >
                   Download Resume
                 </Button>
@@ -325,7 +325,7 @@ export const Contact = () => {
           {/* Right Panel: Active Contact Form */}
           <div className="lg:col-span-7">
             <GlassCard
-              glowColor="rgba(249, 115, 22, 0.3)"
+              glowColor="rgba(236, 72, 153, 0.24)"
               className="p-8 space-y-6 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
             >
               <h3 className="text-2xl font-extrabold font-heading text-text-primary">
@@ -442,7 +442,7 @@ export const Contact = () => {
                   size="lg"
                   icon={Send}
                   disabled={isSending}
-                  className="w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-glow duration-300"
+                  className="w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(96,165,250,0.22)] duration-300"
                 >
                   {isSending ? 'Sending…' : 'Send Message'}
                 </Button>

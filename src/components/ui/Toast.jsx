@@ -11,7 +11,7 @@ export const Toast = ({ isVisible, message }) => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-8 right-8 z-50 flex items-center gap-3 px-5 py-3 glass-panel rounded-2xl border border-success/30 shadow-glow bg-bg-card/90 text-text-primary"
+          className="fixed bottom-8 right-8 z-50 flex items-center gap-3 px-5 py-3 glass-panel rounded-2xl border border-success/30 shadow-[0_0_30px_rgba(96,165,250,0.18)] bg-bg-card/90 text-text-primary"
         >
           <CheckCircle2 className="w-5 h-5 text-success animate-bounce" />
           <span className="text-sm font-medium">{message}</span>

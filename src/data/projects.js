@@ -33,6 +33,11 @@ export const projects = [
     lessonsLearned:
       'Implemented custom query debouncing and memory caching to reduce API payload overhead by 60%.',
     techStack: ['React', 'JavaScript', 'Tailwind CSS', 'REST API', 'Netlify'],
+    metrics: [
+      { label: 'API Overhead', value: '-60%' },
+      { label: 'Latency', value: 'Debounced' },
+      { label: 'Data Sync', value: 'Offline Cache' }
+    ],
     live: 'https://recipe-craft-srii.netlify.app/',
     github: 'https://github.com/Sriyokeshwar/Recipe',
     images: [recipe1, recipe2],
@@ -62,6 +67,11 @@ export const projects = [
     lessonsLearned:
       'Optimized Chart.js instance updating using React refs and frame throttling for smooth 60fps interaction.',
     techStack: ['React', 'JavaScript', 'Chart.js', 'Tailwind CSS', 'Netlify'],
+    metrics: [
+      { label: 'Render Rate', value: '60 FPS' },
+      { label: 'Slider Latency', value: 'Zero-Lag' },
+      { label: 'Visualizer', value: 'Chart.js' }
+    ],
     live: 'https://siplump.netlify.app/',
     github: 'https://github.com/Sriyokeshwar/Sip---Lumpsum',
     images: [sip1, sip2],
@@ -91,7 +101,12 @@ export const projects = [
     lessonsLearned:
       'Established strict asynchronous data handler abstractions and automated testing pipelines.',
     techStack: ['JavaScript', 'JSON Server', 'HTML5', 'CSS3', 'REST API'],
-    github: 'https://github.com/Sriyokeshwar/JobFlow',
+    metrics: [
+      { label: 'E2E Test Suites', value: '14/14 Pass' },
+      { label: 'API Integrity', value: 'REST JSON' },
+      { label: 'State Sync', value: 'Reactive DOM' }
+    ],
+    github: 'https://github.com/Sriyokeshwar/job-portal',
     images: [jobflow1, jobflow2],
     featured: true,
   },
@@ -119,6 +134,11 @@ export const projects = [
     lessonsLearned:
       'Designed HTTP interceptor patterns and centralized authentication context for seamless route protection.',
     techStack: ['MongoDB', 'Express', 'React', 'Node.js', 'JWT'],
+    metrics: [
+      { label: 'Hash Engine', value: 'Bcrypt' },
+      { label: 'Token Spec', value: 'JWT Bearer' },
+      { label: 'Auth Middleware', value: 'Central Context' }
+    ],
     github: 'https://github.com/Sriyokeshwar/Login-view',
     images: [login1, login2, login3],
     featured: true,

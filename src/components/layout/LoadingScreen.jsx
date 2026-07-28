@@ -115,7 +115,7 @@ export const LoadingScreen = ({ onComplete }) => {
         {/* Elegant modern slide-bar container */}
         <div className="relative w-56 h-1 bg-white/5 rounded-full overflow-hidden mb-3">
           <motion.div
-            className="h-full bg-gradient-to-r from-primary via-orange-500 to-secondary"
+            className="h-full bg-gradient-to-r from-primary via-accent to-secondary"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           />

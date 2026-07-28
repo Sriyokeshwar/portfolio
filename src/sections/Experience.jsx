@@ -143,7 +143,7 @@ export const Experience = () => {
             <div className="col-span-4 relative pl-6 border-l border-white/10 h-full flex flex-col justify-around py-4">
               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5" />
               <div 
-                className="absolute left-0 top-0 w-[2px] bg-gradient-to-b from-primary to-secondary transition-all duration-700" 
+                className="absolute left-0 top-0 w-[2px] bg-gradient-to-b from-primary via-accent to-secondary transition-all duration-700"
                 style={{
                   height: `${((activeIndex + 1) / experience.length) * 100}%`,
                 }}
@@ -183,7 +183,7 @@ export const Experience = () => {
                     }}
                   >
                     <GlassCard
-                      glowColor={idx === 0 ? 'rgba(6, 182, 212, 0.2)' : 'rgba(249, 115, 22, 0.2)'}
+                      glowColor={idx === 0 ? 'rgba(96, 165, 250, 0.2)' : 'rgba(236, 72, 153, 0.2)'}
                       className="p-8 space-y-5 w-full h-full flex flex-col justify-between border border-white/10 shadow-2xl relative"
                     >
                       <div className="space-y-4">

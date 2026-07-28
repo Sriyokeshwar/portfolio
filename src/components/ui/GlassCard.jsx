@@ -4,8 +4,9 @@ import { cn } from '../../utils/cn';
 export const GlassCard = ({
   children,
   className = '',
+  contentClassName = '',
   hoverGlow = true,
-  glowColor = 'rgba(249, 115, 22, 0.25)', // Primary orange default
+  glowColor = 'rgba(96, 165, 250, 0.24)',
   onClick,
   ...props
 }) => {
@@ -14,18 +15,18 @@ export const GlassCard = ({
       onClick={onClick}
       style={{ '--card-glow-color': glowColor }}
       className={cn(
-        'glass-panel rounded-3xl p-6 relative overflow-hidden transition-all duration-500 group transform-gpu transform-style-preserve-3d',
+        'liquid-glass rounded-[24px] p-6 relative overflow-hidden transition-all duration-500 group transform-gpu transform-style-preserve-3d',
         hoverGlow &&
-          'hover:border-primary/45 hover:shadow-glass hover:-translate-y-1.5',
+          'hover:border-primary/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(2,6,23,0.32)]',
         className
       )}
       {...props}
     >
       {/* Dynamic Specular Sheen (Mouse-following reflection light overlay) */}
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-overlay z-20"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-screen z-20"
         style={{
-          background: `radial-gradient(circle 350px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.12), transparent 80%)`,
+          background: `radial-gradient(circle 320px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 78%)`,
         }}
       />
 
@@ -40,10 +41,10 @@ export const GlassCard = ({
       )}
 
       {/* High-quality premium top border highlight */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none opacity-70 group-hover:opacity-100 transition-opacity" />
 
       {/* Central content container preserving 3D stack */}
-      <div className="relative z-10 transform-style-preserve-3d">{children}</div>
+      <div className={cn("relative z-10 transform-style-preserve-3d", contentClassName)}>{children}</div>
     </div>
   );
 };

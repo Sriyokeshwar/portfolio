@@ -13,25 +13,25 @@ export default {
           lightCard: '#FFFFFF',
         },
         primary: {
-          DEFAULT: '#F97316',
-          hover: '#EA580C',
-          glow: 'rgba(249, 115, 22, 0.35)',
+          DEFAULT: '#60A5FA',
+          hover: '#3B82F6',
+          glow: 'rgba(96, 165, 250, 0.35)',
         },
         secondary: {
-          DEFAULT: '#06B6D4',
-          hover: '#0891B2',
-          glow: 'rgba(6, 182, 212, 0.35)',
+          DEFAULT: '#A855F7',
+          hover: '#9333EA',
+          glow: 'rgba(168, 85, 247, 0.35)',
         },
         accent: {
-          DEFAULT: '#8B5CF6',
-          hover: '#7C3AED',
-          glow: 'rgba(139, 92, 246, 0.35)',
+          DEFAULT: '#EC4899',
+          hover: '#DB2777',
+          glow: 'rgba(236, 72, 153, 0.35)',
         },
         success: '#22C55E',
         surface: {
           dark: 'rgba(11, 17, 32, 0.7)',
           border: 'var(--border-color)',
-          borderHover: 'rgba(249, 115, 22, 0.4)',
+          borderHover: 'rgba(96, 165, 250, 0.35)',
         },
         text: {
           primary: 'var(--text-main)',
@@ -55,9 +55,9 @@ export default {
       },
       boxShadow: {
         glass: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-        glow: '0 0 25px -5px rgba(249, 115, 22, 0.4)',
-        cyanGlow: '0 0 25px -5px rgba(6, 182, 212, 0.4)',
-        violetGlow: '0 0 25px -5px rgba(139, 92, 246, 0.4)',
+        glow: '0 0 25px -5px rgba(96, 165, 250, 0.35)',
+        cyanGlow: '0 0 25px -5px rgba(168, 85, 247, 0.35)',
+        violetGlow: '0 0 25px -5px rgba(236, 72, 153, 0.35)',
       },
       animation: {
         'spin-slow': 'spin 12s linear infinite',

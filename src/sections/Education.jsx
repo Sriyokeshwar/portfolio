@@ -34,7 +34,7 @@ export const Education = () => {
               </span>
 
               <TiltCard maxAngle={8} className="h-full">
-                <GlassCard glowColor="rgba(6, 182, 212, 0.2)" className="p-6 space-y-3 transform-style-preserve-3d">
+                <GlassCard glowColor="rgba(96, 165, 250, 0.2)" className="p-6 space-y-3 transform-style-preserve-3d">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2 text-xs font-mono text-secondary font-semibold">
                       <GraduationCap className="w-4 h-4" />

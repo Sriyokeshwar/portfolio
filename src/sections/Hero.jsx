@@ -193,7 +193,7 @@ export const Hero = () => {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen flex flex-col justify-between items-center py-20 px-6 overflow-hidden bg-[#050816]"
+      className="relative w-full min-h-screen flex flex-col justify-between items-center py-20 px-6 overflow-hidden bg-[#030712]"
       style={{ perspective: '1000px' }}
     >
       {/* Background Layer with Slow Rotation */}
@@ -211,7 +211,7 @@ export const Hero = () => {
         <div className="space-y-1">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold font-heading tracking-tight text-text-primary leading-none">
             Hi, I'm{' '}
-            <span className="bg-gradient-to-r from-primary via-orange-500 to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {profile.name}
             </span>
           </h1>
@@ -233,22 +233,22 @@ export const Hero = () => {
         {/* Centered Profile Image Frame */}
         <div
           ref={portraitContainerRef}
-          className="relative rounded-3xl p-3 glass-panel border border-white/10 shadow-2xl overflow-hidden group w-72 h-80 sm:w-80 sm:h-96 transform-style-preserve-3d transform-gpu"
+          className="relative rounded-[32px] p-3 liquid-glass border border-white/15 shadow-[0_24px_80px_rgba(2,6,23,0.34)] overflow-hidden group w-72 h-80 sm:w-80 sm:h-96 transform-style-preserve-3d transform-gpu"
         >
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-secondary/15 opacity-80 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-transparent to-accent/10 opacity-90 pointer-events-none" />
           <img
             src={profile.assets.profileTransparent}
             alt={profile.name}
             className="w-full h-full object-cover object-top rounded-2xl pointer-events-none scale-105 group-hover:scale-108 transition-transform duration-700"
           />
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-[40px] opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700 pointer-events-none -z-10" />
+          <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 via-secondary/15 to-accent/20 rounded-[40px] opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-700 pointer-events-none -z-10" />
         </div>
 
         {/* Floating Badge 1: Top-Left */}
         <div
           ref={(el) => (badgesRef.current[0] = el)}
-          className="absolute -top-4 -left-12 sm:-left-20 glass-panel px-3.5 py-2 rounded-2xl border border-white/20 shadow-lg flex items-center gap-2 animate-float transform-gpu"
+          className="absolute -top-4 -left-12 sm:-left-20 glass-panel px-3.5 py-2 rounded-2xl border border-white/15 shadow-[0_10px_35px_rgba(2,6,23,0.2)] flex items-center gap-2 animate-float transform-gpu"
         >
           <Sparkles className="w-4 h-4 text-primary animate-spin-slow" />
           <span className="text-[11px] font-bold text-text-primary">
@@ -259,7 +259,7 @@ export const Hero = () => {
         {/* Floating Badge 2: Top-Right */}
         <div
           ref={(el) => (badgesRef.current[1] = el)}
-          className="absolute top-12 -right-12 sm:-right-24 glass-panel px-3.5 py-2 rounded-2xl border border-white/20 shadow-lg flex items-center gap-2 animate-float transform-gpu"
+          className="absolute top-12 -right-12 sm:-right-24 glass-panel px-3.5 py-2 rounded-2xl border border-white/15 shadow-[0_10px_35px_rgba(2,6,23,0.2)] flex items-center gap-2 animate-float transform-gpu"
           style={{ animationDelay: '1.5s' }}
         >
           <Zap className="w-4 h-4 text-primary" />
@@ -271,7 +271,7 @@ export const Hero = () => {
         {/* Floating Badge 3: Bottom-Left */}
         <div
           ref={(el) => (badgesRef.current[2] = el)}
-          className="absolute bottom-16 -left-16 sm:-left-24 glass-panel px-3.5 py-2 rounded-2xl border border-white/20 shadow-lg flex items-center gap-2 animate-float transform-gpu"
+          className="absolute bottom-16 -left-16 sm:-left-24 glass-panel px-3.5 py-2 rounded-2xl border border-white/15 shadow-[0_10px_35px_rgba(2,6,23,0.2)] flex items-center gap-2 animate-float transform-gpu"
           style={{ animationDelay: '3s' }}
         >
           <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse" />
@@ -283,7 +283,7 @@ export const Hero = () => {
         {/* Floating Badge 4: Bottom-Right */}
         <div
           ref={(el) => (badgesRef.current[3] = el)}
-          className="absolute -bottom-2 -right-8 sm:-right-16 glass-panel px-3.5 py-2 rounded-2xl border border-white/20 shadow-lg flex items-center gap-2 animate-float transform-gpu"
+          className="absolute -bottom-2 -right-8 sm:-right-16 glass-panel px-3.5 py-2 rounded-2xl border border-white/15 shadow-[0_10px_35px_rgba(2,6,23,0.2)] flex items-center gap-2 animate-float transform-gpu"
           style={{ animationDelay: '4.5s' }}
         >
           <ShieldCheck className="w-4 h-4 text-secondary" />
@@ -324,7 +324,7 @@ export const Hero = () => {
         </div>
 
         {/* Social Icons Bar */}
-        <div className="flex items-center justify-center gap-3 py-3 px-6 rounded-full glass-panel border border-white/10">
+        <div className="flex items-center justify-center gap-3 py-3 px-6 rounded-full liquid-glass border border-white/15 shadow-[0_12px_40px_rgba(2,6,23,0.2)]">
           <span className="text-[10px] text-text-muted uppercase font-mono tracking-widest mr-2">
             Connect:
           </span>

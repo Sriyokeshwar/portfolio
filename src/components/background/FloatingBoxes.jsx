@@ -53,16 +53,16 @@ export const FloatingBoxes = () => {
 
   // 10 Floating Boxes defined with distinct sizes, z-indices, positions, scroll speeds, glows, and blur depths.
   const boxesData = [
-    { size: 'w-24 h-24 md:w-32 md:h-32', top: '10%', left: '8%', speed: 0.8, rotate: 0.3, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(249,115,22,0.15)]', border: 'from-primary/30 to-transparent', blur: 'backdrop-blur-sm' },
-    { size: 'w-36 h-36 md:w-48 md:h-48', top: '25%', left: '75%', speed: 1.2, rotate: -0.4, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(6,182,212,0.15)]', border: 'from-secondary/30 to-transparent', blur: 'backdrop-blur-md' },
-    { size: 'w-20 h-20 md:w-28 md:h-28', top: '45%', left: '12%', speed: 0.6, rotate: 0.6, zIndex: 'z-0', glow: 'shadow-[0_0_15px_rgba(139,92,246,0.15)]', border: 'from-accent/30 to-transparent', blur: 'backdrop-blur-[2px]' },
-    { size: 'w-40 h-40 md:w-56 md:h-56', top: '60%', left: '68%', speed: 1.5, rotate: -0.2, zIndex: 'z-30', glow: 'shadow-[0_0_30px_rgba(249,115,22,0.2)]', border: 'from-primary/45 to-transparent', blur: 'backdrop-blur-lg' },
-    { size: 'w-16 h-16 md:w-24 md:h-24', top: '78%', left: '4%', speed: 0.9, rotate: 0.8, zIndex: 'z-0', glow: 'shadow-[0_0_15px_rgba(6,182,212,0.1)]', border: 'from-secondary/20 to-transparent', blur: 'backdrop-blur-sm' },
-    { size: 'w-32 h-32 md:w-40 md:h-40', top: '90%', left: '80%', speed: 1.1, rotate: -0.5, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(139,92,246,0.2)]', border: 'from-accent/40 to-transparent', blur: 'backdrop-blur-md' },
-    { size: 'w-28 h-28 md:w-36 md:h-36', top: '115%', left: '15%', speed: 0.75, rotate: 0.35, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(6,182,212,0.15)]', border: 'from-secondary/30 to-transparent', blur: 'backdrop-blur-sm' },
-    { size: 'w-44 h-44 md:w-60 md:h-60', top: '135%', left: '72%', speed: 1.4, rotate: -0.3, zIndex: 'z-30', glow: 'shadow-[0_0_35px_rgba(249,115,22,0.25)]', border: 'from-primary/30 to-transparent', blur: 'backdrop-blur-xl' },
-    { size: 'w-24 h-24 md:w-32 md:h-32', top: '160%', left: '5%', speed: 0.95, rotate: 0.5, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(139,92,246,0.15)]', border: 'from-accent/30 to-transparent', blur: 'backdrop-blur-[3px]' },
-    { size: 'w-36 h-36 md:w-44 md:h-44', top: '185%', left: '82%', speed: 1.05, rotate: -0.45, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(6,182,212,0.2)]', border: 'from-secondary/40 to-transparent', blur: 'backdrop-blur-md' },
+    { size: 'w-24 h-24 md:w-32 md:h-32', top: '10%', left: '8%', speed: 0.8, rotate: 0.3, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(96,165,250,0.15)]', border: 'from-primary/30 to-transparent', blur: 'backdrop-blur-sm' },
+    { size: 'w-36 h-36 md:w-48 md:h-48', top: '25%', left: '75%', speed: 1.2, rotate: -0.4, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(168,85,247,0.15)]', border: 'from-secondary/30 to-transparent', blur: 'backdrop-blur-md' },
+    { size: 'w-20 h-20 md:w-28 md:h-28', top: '45%', left: '12%', speed: 0.6, rotate: 0.6, zIndex: 'z-0', glow: 'shadow-[0_0_15px_rgba(236,72,153,0.15)]', border: 'from-accent/30 to-transparent', blur: 'backdrop-blur-[2px]' },
+    { size: 'w-40 h-40 md:w-56 md:h-56', top: '60%', left: '68%', speed: 1.5, rotate: -0.2, zIndex: 'z-30', glow: 'shadow-[0_0_30px_rgba(96,165,250,0.2)]', border: 'from-primary/45 to-transparent', blur: 'backdrop-blur-lg' },
+    { size: 'w-16 h-16 md:w-24 md:h-24', top: '78%', left: '4%', speed: 0.9, rotate: 0.8, zIndex: 'z-0', glow: 'shadow-[0_0_15px_rgba(168,85,247,0.14)]', border: 'from-secondary/20 to-transparent', blur: 'backdrop-blur-sm' },
+    { size: 'w-32 h-32 md:w-40 md:h-40', top: '90%', left: '80%', speed: 1.1, rotate: -0.5, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(236,72,153,0.2)]', border: 'from-accent/40 to-transparent', blur: 'backdrop-blur-md' },
+    { size: 'w-28 h-28 md:w-36 md:h-36', top: '115%', left: '15%', speed: 0.75, rotate: 0.35, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(168,85,247,0.15)]', border: 'from-secondary/30 to-transparent', blur: 'backdrop-blur-sm' },
+    { size: 'w-44 h-44 md:w-60 md:h-60', top: '135%', left: '72%', speed: 1.4, rotate: -0.3, zIndex: 'z-30', glow: 'shadow-[0_0_35px_rgba(96,165,250,0.25)]', border: 'from-primary/30 to-transparent', blur: 'backdrop-blur-xl' },
+    { size: 'w-24 h-24 md:w-32 md:h-32', top: '160%', left: '5%', speed: 0.95, rotate: 0.5, zIndex: 'z-0', glow: 'shadow-[0_0_20px_rgba(236,72,153,0.15)]', border: 'from-accent/30 to-transparent', blur: 'backdrop-blur-[3px]' },
+    { size: 'w-36 h-36 md:w-44 md:h-44', top: '185%', left: '82%', speed: 1.05, rotate: -0.45, zIndex: 'z-30', glow: 'shadow-[0_0_25px_rgba(168,85,247,0.2)]', border: 'from-secondary/40 to-transparent', blur: 'backdrop-blur-md' },
   ];
 
   return (

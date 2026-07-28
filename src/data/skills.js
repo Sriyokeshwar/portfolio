@@ -10,39 +10,48 @@ export const skillCategories = [
 
 export const skills = [
   // Frontend
-  { name: 'React', category: 'frontend', level: 90, icon: 'Atom' },
-  { name: 'HTML5', category: 'frontend', level: 95, icon: 'Code2' },
+  { name: 'React.js', category: 'frontend', level: 92, icon: 'Atom' },
+  { name: 'Next.js', category: 'frontend', level: 88, icon: 'Layers' },
+  { name: 'TypeScript', category: 'frontend', level: 86, icon: 'Code2' },
+  { name: 'Tailwind CSS', category: 'frontend', level: 90, icon: 'LayoutGrid' },
+  { name: 'HTML5', category: 'frontend', level: 94, icon: 'Code2' },
   { name: 'CSS3', category: 'frontend', level: 92, icon: 'Palette' },
-  { name: 'Tailwind CSS', category: 'frontend', level: 88, icon: 'LayoutGrid' },
-  { name: 'JavaScript (ES6+)', category: 'frontend', level: 90, icon: 'FileCode' },
-  { name: 'Figma', category: 'frontend', level: 82, icon: 'Figma' },
+  { name: 'Framer Motion', category: 'frontend', level: 84, icon: 'Sparkles' },
+  { name: 'GSAP', category: 'frontend', level: 80, icon: 'Zap' },
 
   // Backend
-  { name: 'Node.js', category: 'backend', level: 85, icon: 'Server' },
-  { name: 'Express.js', category: 'backend', level: 86, icon: 'Cpu' },
+  { name: 'Node.js', category: 'backend', level: 86, icon: 'Server' },
+  { name: 'Express.js', category: 'backend', level: 84, icon: 'Cpu' },
   { name: 'REST APIs', category: 'backend', level: 90, icon: 'Network' },
+  { name: 'JWT Authentication', category: 'backend', level: 82, icon: 'Shield' },
 
   // Database
-  { name: 'MongoDB', category: 'database', level: 84, icon: 'Database' },
+  { name: 'MongoDB', category: 'database', level: 88, icon: 'Database' },
+  { name: 'Mongoose', category: 'database', level: 84, icon: 'Table' },
   { name: 'MySQL', category: 'database', level: 80, icon: 'Table' },
 
   // Languages
   { name: 'JavaScript', category: 'languages', level: 90, icon: 'FileCode' },
+  { name: 'TypeScript', category: 'languages', level: 86, icon: 'Code2' },
   { name: 'Java', category: 'languages', level: 78, icon: 'Coffee' },
-  { name: 'PHP', category: 'languages', level: 75, icon: 'Globe' },
-  { name: 'Python', category: 'languages', level: 72, icon: 'Terminal' },
+  { name: 'Python', category: 'languages', level: 74, icon: 'Terminal' },
+  { name: 'SQL', category: 'languages', level: 80, icon: 'Database' },
 
   // Tools
-  { name: 'Git & GitHub', category: 'tools', level: 88, icon: 'GitBranch' },
+  { name: 'Git', category: 'tools', level: 88, icon: 'GitBranch' },
+  { name: 'GitHub', category: 'tools', level: 90, icon: 'Github' },
   { name: 'VS Code', category: 'tools', level: 95, icon: 'Laptop' },
   { name: 'Postman', category: 'tools', level: 85, icon: 'Send' },
-  { name: 'Canva & Express', category: 'tools', level: 82, icon: 'Image' },
+  { name: 'Figma', category: 'tools', level: 82, icon: 'Figma' },
+  { name: 'Vercel', category: 'tools', level: 84, icon: 'Rocket' },
 
   // AI Tools
-  { name: 'Claude AI', category: 'ai', level: 92, icon: 'Sparkles' },
   { name: 'ChatGPT', category: 'ai', level: 90, icon: 'Bot' },
+  { name: 'Cursor AI', category: 'ai', level: 86, icon: 'Sparkles' },
+  { name: 'Claude AI', category: 'ai', level: 84, icon: 'Brain' },
   { name: 'GitHub Copilot', category: 'ai', level: 88, icon: 'Wand2' },
-  { name: 'Gemini', category: 'ai', level: 86, icon: 'Brain' },
+  { name: 'Gemini', category: 'ai', level: 82, icon: 'Brain' },
+  { name: 'Perplexity AI', category: 'ai', level: 80, icon: 'Search' },
 ];
 
 export const processSteps = [

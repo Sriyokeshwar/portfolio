@@ -108,7 +108,7 @@ export const Navbar = ({ onOpenCommandPalette, onOpenMobileDrawer }) => {
                     {isActive && (
                       <motion.span
                         layoutId="activeNavDock"
-                        className="absolute inset-0 bg-primary/20 rounded-full border border-primary/40 -z-10 shadow-[0_0_12px_rgba(249,115,22,0.15)]"
+                        className="absolute inset-0 bg-primary/20 rounded-full border border-primary/40 -z-10 shadow-[0_0_12px_rgba(96,165,250,0.18)]"
                         transition={{ type: 'spring', stiffness: 350, damping: 22, mass: 0.7 }} // Liquid spring morph
                       />
                     )}
@@ -139,9 +139,9 @@ export const Navbar = ({ onOpenCommandPalette, onOpenMobileDrawer }) => {
                 aria-label="Toggle Theme"
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-4 h-4 text-amber-400" />
+                  <Sun className="w-4 h-4 text-primary" />
                 ) : (
-                  <Moon className="w-4 h-4 text-indigo-400" />
+                  <Moon className="w-4 h-4 text-secondary" />
                 )}
               </button>
 

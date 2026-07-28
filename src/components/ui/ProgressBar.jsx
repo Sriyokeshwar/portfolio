@@ -7,7 +7,7 @@ export const ProgressBar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 h-[3px] bg-transparent z-50 pointer-events-none">
       <div
-        className="h-full bg-gradient-to-r from-primary via-orange-400 to-secondary transition-all duration-150 ease-out shadow-[0_0_10px_rgba(249,115,22,0.8)]"
+        className="h-full bg-gradient-to-r from-primary via-accent to-secondary transition-all duration-150 ease-out shadow-[0_0_10px_rgba(96,165,250,0.35)]"
         style={{ width: `${completion}%` }}
       />
     </div>

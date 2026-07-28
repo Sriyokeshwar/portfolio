@@ -76,7 +76,7 @@ export const MobileDrawer = ({ isOpen, onClose }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={onClose}
-              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-primary to-amber-500 text-white font-semibold rounded-2xl shadow-glow text-sm"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold rounded-2xl shadow-[0_0_30px_rgba(96,165,250,0.18)] text-sm"
             >
               <FileText className="w-4 h-4" />
               Download Resume

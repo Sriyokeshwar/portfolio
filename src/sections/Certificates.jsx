@@ -113,7 +113,7 @@ export const Certificates = () => {
                 onClick={() => setSelectedCert(cert)}
               >
                 <GlassCard
-                  glowColor="rgba(139, 92, 246, 0.2)"
+                  glowColor="rgba(168, 85, 247, 0.18)"
                   className="p-6 h-[260px] flex flex-col justify-between border border-white/10"
                 >
                   <div className="space-y-2">
@@ -152,7 +152,7 @@ export const Certificates = () => {
                   onMouseLeave={resetCursor}
                 >
                   <GlassCard
-                    glowColor="rgba(139, 92, 246, 0.25)"
+                    glowColor="rgba(168, 85, 247, 0.2)"
                     className="p-6 h-[260px] flex flex-col justify-between border border-white/10 shadow-xl cursor-pointer"
                   >
                     <div className="space-y-3">
@@ -226,7 +226,7 @@ export const Certificates = () => {
                 href={selectedCert.file}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-amber-500 text-white rounded-full font-semibold text-xs shadow-glow hover:brightness-110 transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary via-secondary to-accent text-white rounded-full font-semibold text-xs shadow-[0_0_30px_rgba(96,165,250,0.18)] hover:brightness-110 transition-all"
               >
                 <ExternalLink className="w-4 h-4" /> Open Full Document
               </a>

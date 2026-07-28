@@ -26,7 +26,7 @@ export const Projects = () => {
   // Responsive state detection
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -99,8 +99,8 @@ export const Projects = () => {
   };
 
   return (
-    <section ref={sectionRef} id="projects" className="py-24 px-6 relative z-10 bg-[#050816] overflow-hidden">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <section ref={sectionRef} id="projects" className="py-24 2xl:py-32 px-6 md:px-12 2xl:px-24 relative z-10 bg-[#050816] overflow-hidden">
+      <div className="max-w-6xl 2xl:max-w-7xl mx-auto space-y-12 md:space-y-16 2xl:space-y-24">
         <SectionHeading
           badge="Selected Works"
           title="Featured Projects"
@@ -114,14 +114,16 @@ export const Projects = () => {
             {projects.map((proj, idx) => (
               <GlassCard
                 key={proj.id}
-                glowColor={idx % 2 === 0 ? 'rgba(249, 115, 22, 0.2)' : 'rgba(6, 182, 212, 0.2)'}
-                className="p-5 flex flex-col gap-5 cursor-pointer border border-white/10"
+                hoverGlow={false}
+                glowColor={idx % 2 === 0 ? 'rgba(96, 165, 250, 0.2)' : 'rgba(168, 85, 247, 0.2)'}
+                className="p-5 cursor-pointer border border-white/10"
+                contentClassName="flex flex-col gap-5"
                 onClick={() => openProjectModal(proj)}
               >
                 <div className="rounded-xl overflow-hidden aspect-video bg-bg-dark border border-white/10 relative">
                   <img src={proj.images[0]} alt={proj.title} className="w-full h-full object-cover" />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 text-left">
                   <span className="text-[10px] font-mono text-primary font-semibold uppercase tracking-wider">
                     {proj.category} — {proj.year}
                   </span>
@@ -139,15 +141,16 @@ export const Projects = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                   {proj.live && (
                     <Button
                       href={proj.live}
                       target="_blank"
                       rel="noopener noreferrer"
                       variant="primary"
-                      size="sm"
+                      size="md"
                       icon={ExternalLink}
+                      className="w-full sm:w-auto"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Live Demo
@@ -159,8 +162,9 @@ export const Projects = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       variant="outline"
-                      size="sm"
+                      size="md"
                       icon={Github}
+                      className="w-full sm:w-auto"
                       onClick={(e) => e.stopPropagation()}
                     >
                       GitHub
@@ -172,7 +176,7 @@ export const Projects = () => {
           </div>
         ) : (
           // Desktop Stacked Parallax scene
-          <div ref={cardsContainerRef} className="relative w-full h-[65vh] flex items-center justify-center">
+          <div ref={cardsContainerRef} className="relative w-full h-[530px] 2xl:h-[600px] flex items-center justify-center">
             {projects.map((proj, idx) => (
               <div
                 key={proj.id}
@@ -183,14 +187,15 @@ export const Projects = () => {
                 }}
               >
                 <GlassCard
-                  glowColor={idx % 2 === 0 ? 'rgba(249, 115, 22, 0.25)' : 'rgba(6, 182, 212, 0.25)'}
-                  className="p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center w-full max-w-4xl h-full shadow-2xl relative border border-white/10 group cursor-pointer"
+                  glowColor={idx % 2 === 0 ? 'rgba(96, 165, 250, 0.25)' : 'rgba(168, 85, 247, 0.25)'}
+                  className="p-6 md:p-8 2xl:p-10 w-full max-w-5xl 2xl:max-w-6xl h-[460px] 2xl:h-[520px] shadow-2xl relative border border-white/10 group cursor-pointer"
+                  contentClassName="flex flex-col md:flex-row gap-6 md:gap-8 2xl:gap-10 items-stretch h-full w-full"
                   onClick={() => openProjectModal(proj)}
                   onMouseEnter={() => setCursor('hover-image', 'Case Study')}
                   onMouseLeave={resetCursor}
                 >
                   {/* Left Column: Image Preview Frame */}
-                  <div className="w-full md:w-[48%] h-48 md:h-full rounded-2xl overflow-hidden bg-bg-dark border border-white/10 group-hover:border-primary/40 transition-colors relative flex flex-col">
+                  <div className="w-full md:w-[50%] h-48 md:h-full rounded-2xl overflow-hidden bg-bg-dark border border-white/10 group-hover:border-primary/40 transition-colors relative flex flex-col shrink-0">
                     {/* Browser top-bar */}
                     <div className="h-6 bg-white/5 border-b border-white/10 px-3 flex items-center gap-1.5 shrink-0 z-10">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500/70" />
@@ -213,31 +218,53 @@ export const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Right Column: Project Info */}
-                  <div className="w-full md:w-[52%] flex flex-col justify-between h-full py-2">
+                  {/* Right Column: Project Info (Innovative Console Dashboard Layout) */}
+                  <div className="w-full md:w-[50%] flex flex-col justify-between h-full py-1 text-left">
                     <div className="space-y-4">
-                      <div>
-                        <span className="text-xs font-mono text-primary font-semibold uppercase tracking-wider">
-                          {proj.category} — {proj.year}
+                      {/* Header row */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] 2xl:text-xs font-mono font-bold tracking-widest text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded">
+                          {proj.category}
                         </span>
-                        <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-text-primary group-hover:text-primary transition-colors mt-1">
-                          {proj.title}
-                        </h3>
+                        <span className="text-[10px] 2xl:text-xs font-mono tracking-wider text-text-muted">
+                          {proj.year}
+                        </span>
                       </div>
 
-                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3">
-                        {proj.summary}
-                      </p>
+                      {/* Project Title and Summary */}
+                      <div>
+                        <h3 className="text-2xl sm:text-3xl 2xl:text-4xl font-extrabold font-heading text-text-primary group-hover:text-primary transition-colors duration-300 mt-1 2xl:mt-2">
+                          {proj.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm 2xl:text-base text-text-muted 2xl:text-text-secondary leading-relaxed line-clamp-3 font-body mt-2 2xl:mt-3">
+                          {proj.summary}
+                        </p>
+                      </div>
 
-                      <div className="space-y-2">
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-text-muted block">
-                          Core Stack
+                      {/* Dynamic Spec Telemetry Grid */}
+                      <div className="grid grid-cols-3 gap-2.5 2xl:gap-3.5 my-2 2xl:my-3">
+                        {proj.metrics?.map((m) => (
+                          <div key={m.label} className="glass-panel p-2.5 rounded-xl border border-white/5 bg-white/[0.02] flex flex-col justify-center">
+                            <span className="text-[8px] 2xl:text-[10px] font-mono uppercase tracking-widest text-text-muted block mb-0.5">
+                              {m.label}
+                            </span>
+                            <span className="text-[10px] 2xl:text-xs font-mono font-bold text-text-secondary truncate">
+                              {m.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Core Stack */}
+                      <div className="space-y-1.5">
+                        <span className="text-[9px] 2xl:text-[11px] font-mono uppercase tracking-widest text-text-muted block">
+                          SYSTEM STACK
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {proj.techStack.map((tech) => (
                             <span
                               key={tech}
-                              className="text-[10px] font-mono glass-panel px-2.5 py-1 rounded-md text-text-muted border border-white/10 group-hover:border-primary/20 group-hover:text-text-secondary transition-colors"
+                              className="text-[9px] 2xl:text-[11px] font-mono bg-white/[0.04] px-2 py-0.5 2xl:px-3 2xl:py-1 rounded border border-white/10 text-text-muted group-hover:border-primary/20 group-hover:text-text-secondary transition-all duration-300 hover:scale-105 hover:bg-white/[0.08]"
                             >
                               {tech}
                             </span>
@@ -246,34 +273,86 @@ export const Projects = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-4">
-                      {proj.live && (
-                        <Button
+                    {/* Action Cards Grid */}
+                    <div className="grid grid-cols-2 gap-3 2xl:gap-4 pt-3 border-t border-white/10 mt-3 shrink-0">
+                      {/* Live Link Card */}
+                      {proj.live ? (
+                        <a
                           href={proj.live}
                           target="_blank"
                           rel="noopener noreferrer"
-                          variant="primary"
-                          size="sm"
-                          icon={ExternalLink}
                           onClick={(e) => e.stopPropagation()}
-                          cursorLabel="Live"
+                          className="glass-panel p-3 2xl:p-4 rounded-xl border border-white/10 hover:border-primary/45 hover:bg-primary/5 transition-all duration-300 flex items-center justify-between group/link cursor-pointer relative overflow-hidden"
                         >
-                          Live Demo
-                        </Button>
+                          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover/link:opacity-100 transition-opacity pointer-events-none" />
+                          <div className="flex flex-col">
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-primary font-bold uppercase tracking-wider mb-0.5">
+                              LAUNCH APP
+                            </span>
+                            <span className="text-xs 2xl:text-sm font-bold text-text-primary group-hover/link:text-primary transition-colors flex items-center gap-1.5">
+                              Live Site <ExternalLink className="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 bg-success/10 border border-success/20 px-2 py-0.5 2xl:px-3 2xl:py-1 rounded-full shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-success font-semibold">ONLINE</span>
+                          </div>
+                        </a>
+                      ) : (
+                        <div className="glass-panel p-3 2xl:p-4 rounded-xl border border-white/5 opacity-50 flex items-center justify-between">
+                          <div className="flex flex-col">
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-text-muted uppercase tracking-wider mb-0.5">
+                              LAUNCH APP
+                            </span>
+                            <span className="text-xs 2xl:text-sm font-bold text-text-muted">
+                              Staging Offline
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 2xl:px-3 2xl:py-1 rounded-full shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-amber-500 font-semibold">LOCAL RUN</span>
+                          </div>
+                        </div>
                       )}
-                      {proj.github && (
-                        <Button
+
+                      {/* GitHub Link Card */}
+                      {proj.github ? (
+                        <a
                           href={proj.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          variant="outline"
-                          size="sm"
-                          icon={Github}
                           onClick={(e) => e.stopPropagation()}
-                          cursorLabel="Code"
+                          className="glass-panel p-3 2xl:p-4 rounded-xl border border-white/10 hover:border-secondary/45 hover:bg-secondary/5 transition-all duration-300 flex items-center justify-between group/link cursor-pointer relative overflow-hidden"
                         >
-                          GitHub
-                        </Button>
+                          <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent opacity-0 group-hover/link:opacity-100 transition-opacity pointer-events-none" />
+                          <div className="flex flex-col">
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-secondary font-bold uppercase tracking-wider mb-0.5">
+                              SOURCE CODE
+                            </span>
+                            <span className="text-xs 2xl:text-sm font-bold text-text-primary group-hover/link:text-secondary transition-colors flex items-center gap-1.5">
+                              Repository <Github className="w-3 h-3 group-hover/link:scale-110 transition-transform" />
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 bg-secondary/10 border border-secondary/20 px-2 py-0.5 2xl:px-3 2xl:py-1 rounded-full shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-secondary font-semibold">STABLE</span>
+                          </div>
+                        </a>
+                      ) : (
+                        <div className="glass-panel p-3 2xl:p-4 rounded-xl border border-white/5 opacity-50 flex items-center justify-between">
+                          <div className="flex flex-col">
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-text-muted uppercase tracking-wider mb-0.5">
+                              SOURCE CODE
+                            </span>
+                            <span className="text-xs 2xl:text-sm font-bold text-text-muted">
+                              Restricted Access
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-2 py-0.5 2xl:px-3 2xl:py-1 rounded-full shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                            <span className="text-[8px] 2xl:text-[10px] font-mono text-red-500 font-semibold">PRIVATE</span>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -399,7 +478,7 @@ export const Projects = () => {
             {activeTab === 'challenges' && (
               <div className="space-y-6">
                 <div className="glass-panel p-4 rounded-xl border border-white/10 space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-mono text-amber-400 font-semibold">
+                  <div className="flex items-center gap-2 text-xs font-mono text-primary font-semibold">
                     <AlertCircle className="w-4 h-4" /> Engineering Challenge
                   </div>
                   <p className="text-sm text-text-secondary leading-relaxed">

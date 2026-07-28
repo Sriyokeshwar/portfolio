@@ -1,21 +1,21 @@
 export const tokens = {
   colors: {
-    primary: '#f97316',      // vibrant orange
-    secondary: '#06b6d4',    // cyan
-    accent: '#8b5cf6',       // violet
-    success: '#10b981',      // emerald
-    bgDark: '#050816',
-    bgCardDark: 'rgba(11, 17, 32, 0.65)',
-    bgElevatedDark: '#111827',
-    borderDark: 'rgba(255, 255, 255, 0.08)',
+    primary: '#60a5fa',      // aurora blue
+    secondary: '#a855f7',    // premium violet
+    accent: '#ec4899',       // neon pink
+    success: '#34d399',      // mint
+    bgDark: '#030712',
+    bgCardDark: 'rgba(255, 255, 255, 0.06)',
+    bgElevatedDark: '#0b1220',
+    borderDark: 'rgba(255, 255, 255, 0.16)',
     textPrimaryDark: '#ffffff',
-    textSecondaryDark: '#e2e8f0',
+    textSecondaryDark: '#cbd5e1',
     textMutedDark: '#94a3b8',
     
     bgLight: '#f8fafc',
-    bgCardLight: 'rgba(255, 255, 255, 0.85)',
+    bgCardLight: 'rgba(255, 255, 255, 0.8)',
     bgElevatedLight: '#f1f5f9',
-    borderLight: 'rgba(15, 23, 42, 0.08)',
+    borderLight: 'rgba(15, 23, 42, 0.12)',
     textPrimaryLight: '#0f172a',
     textSecondaryLight: '#334155',
     textMutedLight: '#64748b',
@@ -49,10 +49,10 @@ export const tokens = {
     durationFast: 0.15,
   },
   shadows: {
-    glow: '0 0 20px rgba(249, 115, 22, 0.15)',
-    cyanGlow: '0 0 20px rgba(6, 182, 212, 0.15)',
-    ambient: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
-    ambientLight: '0 8px 32px 0 rgba(0, 0, 0, 0.05)',
+    glow: '0 0 30px rgba(96, 165, 250, 0.18)',
+    cyanGlow: '0 0 24px rgba(34, 211, 238, 0.16)',
+    ambient: '0 20px 60px 0 rgba(2, 6, 23, 0.35)',
+    ambientLight: '0 12px 40px 0 rgba(15, 23, 42, 0.08)',
   },
   zIndex: {
     background: 0,

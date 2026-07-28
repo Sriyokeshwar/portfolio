@@ -78,7 +78,7 @@ export const WaterFlowField = ({ count = 25 }) => {
         size: depth === 1 ? 3 : depth === 2 ? 2 : 1.2,
         speed: (Math.random() * 1.5 + 0.8) / depth, // deeper is slower
         opacity: depth === 1 ? 0.7 : depth === 2 ? 0.5 : 0.3,
-        glowColor: depth === 1 ? '#06b6d4' : depth === 2 ? '#3b82f6' : '#8b5cf6', // cyan, blue, violet
+        glowColor: depth === 1 ? '#60a5fa' : depth === 2 ? '#a855f7' : '#ec4899', // aurora blue, violet, pink
         trail: [],
         maxTrail: depth === 1 ? 12 : 8,
         splitCooldown: 0,

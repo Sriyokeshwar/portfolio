@@ -145,7 +145,7 @@ export const About = () => {
               {/* GSAP driven background scroll indicator line */}
               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5 origin-top" />
               <div 
-                className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary via-orange-500 to-secondary origin-top timeline-progress-indicator"
+                className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary via-accent to-secondary origin-top timeline-progress-indicator"
                 style={{ transformScaleY: 0 }}
               />
 
@@ -162,7 +162,7 @@ export const About = () => {
                     <span 
                       className={`absolute -left-[41px] top-1/2 -translate-y-1/2 w-4.5 h-4.5 rounded-full border-2 transition-all duration-500 flex items-center justify-center ${
                         isActive 
-                          ? 'bg-primary border-primary shadow-[0_0_12px_#f97316]' 
+                          ? 'bg-primary border-primary shadow-[0_0_12px_rgba(96,165,250,0.18)]' 
                           : 'bg-bg-dark border-white/20'
                       }`}
                     >
@@ -194,7 +194,7 @@ export const About = () => {
                     }`}
                   >
                     <GlassCard 
-                      glowColor={idx % 2 === 0 ? 'rgba(249,115,22,0.2)' : 'rgba(6,182,212,0.2)'}
+                      glowColor={idx % 2 === 0 ? 'rgba(96,165,250,0.2)' : 'rgba(168,85,247,0.2)'}
                       className="p-8 space-y-4 border border-white/10"
                     >
                       <div className="flex items-center justify-between">

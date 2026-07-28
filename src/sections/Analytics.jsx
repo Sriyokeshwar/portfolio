@@ -111,7 +111,7 @@ export const Analytics = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
                     <button
                       onClick={() => setIsInteractive(true)}
-                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary to-amber-500 text-white font-semibold text-xs shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold text-xs shadow-[0_0_30px_rgba(96,165,250,0.18)] hover:scale-105 transition-transform flex items-center gap-2"
                     >
                       <Play className="w-4 h-4" /> Click to launch interactive Tableau iframe
                     </button>

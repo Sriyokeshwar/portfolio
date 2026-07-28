@@ -20,17 +20,17 @@ export const Button = ({
   const [ripples, setRipples] = useState([]);
 
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium transition-[background-color,border-color,color,box-shadow] duration-300 rounded-full select-none overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary/50 transform-gpu z-10';
+    'relative inline-flex items-center justify-center font-medium transition-all duration-300 rounded-full select-none overflow-hidden group focus:outline-none focus:ring-2 focus:ring-primary/40 transform-gpu z-10 backdrop-blur-2xl';
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-primary via-orange-500 to-amber-500 text-white shadow-glow hover:shadow-orange-500/70 hover:brightness-110',
+      'bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 text-white shadow-[0_12px_35px_rgba(96,165,250,0.24)] hover:shadow-[0_16px_45px_rgba(96,165,250,0.28)] hover:brightness-105',
     secondary:
-      'bg-gradient-to-r from-secondary to-cyan-500 text-white shadow-cyanGlow hover:shadow-cyan-500/70 hover:brightness-110',
+      'bg-gradient-to-r from-secondary/90 to-accent/70 text-white shadow-[0_12px_35px_rgba(34,211,238,0.18)] hover:shadow-[0_16px_45px_rgba(34,211,238,0.24)] hover:brightness-105',
     outline:
-      'border border-surface-border text-text-primary bg-bg-card/40 backdrop-blur-md hover:border-primary/50 hover:bg-primary/10',
+      'border border-white/15 text-text-primary bg-white/8 hover:border-primary/35 hover:bg-white/12',
     ghost:
-      'text-text-muted hover:text-text-primary hover:bg-white/5',
+      'text-text-muted hover:text-text-primary hover:bg-white/8',
   };
 
   const sizes = {
@@ -70,9 +70,9 @@ export const Button = ({
     >
       {/* Dynamic Specular Sheen (Mouse-following reflection shine) */}
       <span
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-overlay"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-screen"
         style={{
-          background: `radial-gradient(circle 60px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.4), transparent 80%)`,
+          background: `radial-gradient(circle 70px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), transparent 82%)`,
         }}
       />
 
