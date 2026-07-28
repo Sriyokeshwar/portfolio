@@ -93,6 +93,39 @@ export const Projects = () => {
     };
   }, [prefersReducedMotion, isMobile]);
 
+  // Mobile / Tablet: Scroll-entrance reveal animation
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion) return;
+
+    const cards = gsap.utils.toArray('.project-stack-card-mobile');
+    
+    const scrollTriggers = cards.map((card) => {
+      return gsap.fromTo(card,
+        { 
+          y: 40, 
+          opacity: 0,
+          scale: 0.96
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom-=60px',
+            toggleActions: 'play none none reverse',
+          }
+        }
+      ).scrollTrigger;
+    });
+
+    return () => {
+      scrollTriggers.forEach(t => t && t.kill());
+    };
+  }, [isMobile, prefersReducedMotion]);
+
   const openProjectModal = (proj) => {
     setSelectedProject(proj);
     setActiveTab('overview');
@@ -116,7 +149,7 @@ export const Projects = () => {
                 key={proj.id}
                 hoverGlow={false}
                 glowColor={idx % 2 === 0 ? 'rgba(96, 165, 250, 0.2)' : 'rgba(168, 85, 247, 0.2)'}
-                className="p-5 cursor-pointer border border-white/10"
+                className="p-5 cursor-pointer border border-white/10 project-stack-card-mobile"
                 contentClassName="flex flex-col gap-5"
                 onClick={() => openProjectModal(proj)}
               >

@@ -15,7 +15,7 @@ export const GlassCard = ({
       onClick={onClick}
       style={{ '--card-glow-color': glowColor }}
       className={cn(
-        'liquid-glass rounded-[24px] p-6 relative overflow-hidden transition-all duration-500 group transform-gpu transform-style-preserve-3d',
+        'liquid-glass rounded-[24px] p-6 relative overflow-hidden transition-all duration-500 group transform-gpu transform-style-preserve-3d active:scale-[0.98] active:brightness-95 md:active:scale-100 md:active:brightness-100',
         hoverGlow &&
           'hover:border-primary/40 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(2,6,23,0.32)]',
         className
@@ -36,6 +36,16 @@ export const GlassCard = ({
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none blur-3xl -z-10"
           style={{
             background: `radial-gradient(circle 200px at var(--mx, 50%) var(--my, 50%), var(--card-glow-color), transparent 80%)`,
+          }}
+        />
+      )}
+
+      {/* Ambient Mobile/Tablet Static Pulsing Glow */}
+      {!hoverGlow && (
+        <div
+          className="absolute inset-0 opacity-20 pointer-events-none blur-3xl -z-10 animate-pulse-slow"
+          style={{
+            background: `radial-gradient(circle 180px at 50% 50%, var(--card-glow-color), transparent 85%)`,
           }}
         />
       )}

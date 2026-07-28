@@ -104,6 +104,33 @@ export const About = () => {
     };
   }, [prefersReducedMotion, isMobile]);
 
+  // Mobile milestone scroll entrance reveal
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion) return;
+
+    const steps = gsap.utils.toArray('.about-mobile-step');
+    const scrollTriggers = steps.map((step) => {
+      return gsap.fromTo(step,
+        { x: -20, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: step,
+            start: 'top bottom-=40px',
+            toggleActions: 'play none none reverse',
+          }
+        }
+      ).scrollTrigger;
+    });
+
+    return () => {
+      scrollTriggers.forEach(t => t && t.kill());
+    };
+  }, [isMobile, prefersReducedMotion]);
+
   return (
     <section
       ref={containerRef}
@@ -121,7 +148,7 @@ export const About = () => {
           // Mobile View: Simple chronological vertical stack
           <div className="space-y-8 pl-4 border-l border-white/10 relative">
             {journeySteps.map((j) => (
-              <div key={j.step} className="relative space-y-2">
+              <div key={j.step} className="relative space-y-2 about-mobile-step">
                 <span className="absolute -left-[25px] top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-bg-dark" />
                 <span className="text-[10px] font-mono text-primary uppercase font-bold tracking-wider">
                   Step {j.step} — {j.short}

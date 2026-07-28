@@ -92,6 +92,33 @@ export const Experience = () => {
     };
   }, [prefersReducedMotion, isMobile]);
 
+  // Mobile career items scroll entrance reveal
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion) return;
+
+    const items = gsap.utils.toArray('.experience-mobile-item');
+    const scrollTriggers = items.map((item) => {
+      return gsap.fromTo(item,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top bottom-=50px',
+            toggleActions: 'play none none reverse',
+          }
+        }
+      ).scrollTrigger;
+    });
+
+    return () => {
+      scrollTriggers.forEach(t => t && t.kill());
+    };
+  }, [isMobile, prefersReducedMotion]);
+
   return (
     <section
       ref={containerRef}
@@ -109,7 +136,7 @@ export const Experience = () => {
           // Mobile View: Chronological responsive list
           <div className="space-y-8 pl-4 border-l border-white/10 relative">
             {experience.map((exp, idx) => (
-              <div key={exp.id} className="relative space-y-3">
+              <div key={exp.id} className="relative space-y-3 experience-mobile-item">
                 <span className="absolute -left-[24px] top-1.5 w-3.5 h-3.5 rounded-full bg-secondary border-2 border-bg-dark" />
                 <div>
                   <span className="text-[10px] font-mono text-secondary uppercase font-bold tracking-wider">
